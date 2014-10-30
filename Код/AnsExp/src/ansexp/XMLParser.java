@@ -75,9 +75,10 @@ public class XMLParser {
         return doc;
     }
 
-
     public Node getResult() {
+        result = new Node("Root");
         this.parseToResult(document, result);
         return result;
     }
+
 }
