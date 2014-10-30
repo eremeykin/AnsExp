@@ -1,0 +1,37 @@
+*IF,ENDFL,EQ,0,THEN
+	*DO,CASEPOINTER,1,10,1
+		/SOL
+		ALLSEL, ALL
+		CSYS, 1
+		cuttingforce_angle=(CASEPOINTER-1)*15
+		cuttingforce_node=NODE(outer_radius, cuttingforce_angle, ring_depth)
+		FDELE,ALL,ALL   
+		F, cuttingforce_node, FX, cuttingforce_rad 
+		F, cuttingforce_node, FY, cuttingforce_tan 
+		F, cuttingforce_node, FZ, cuttingforce_ax  
+		CSYS, 0 
+		ALLSEL, ALL
+		!Заменить на SOLVE
+		*MSG, UI, CASEPOINTER
+		CASEPOINTER = %I
+		!
+		
+		!*IF,CASEPOINTER,LT,10,THEN
+			!/SOLU 
+			!SOLVE
+			!/POST1
+			!STR='LOAD_CASE_'
+			!STR=STRCAT(STR,CHRVAL(CASEPOINTER))
+			!SET,1 
+			!RESWRITE, STR
+			!RAPPND,1,1
+		!*ENDIF
+	*ENDDO
+	ENDFL=1
+	!SAVE,'reserveDB','db',DIR_STR(1)
+	*MSG, UI
+	"ALL STEPS SOLVED"
+*ELSE
+	*MSG, UI
+	"ALREADY SOLVED"
+*ENDIF

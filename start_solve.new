@@ -1,0 +1,108 @@
+*IF,ENDFL,EQ,0,THEN
+	*DO,CASEPOINTER,1,9,1
+		/SOL
+		ALLSEL, ALL
+		CSYS, 1
+		cuttingforce_angle=240-(CASEPOINTER-1)*15
+		cuttingforce_node=NODE(outer_radius, cuttingforce_angle, ring_depth-0.000)
+		!FDELE,ALL,ALL   
+		F, cuttingforce_node, FX, cuttingforce_rad 
+		F, cuttingforce_node, FY, cuttingforce_tan 
+		F, cuttingforce_node, FZ, cuttingforce_ax  
+		CSYS, 0 
+		ALLSEL, ALL
+		!Заменить на SOLVE
+		*MSG, UI, CASEPOINTER
+		CASEPOINTER = %I
+		!
+		
+		*IF,CASEPOINTER,LT,10,THEN
+			/SOLU 
+			!SOLVE
+			/POST1
+			!LCWRITE,CASEPOINTER,'LOAD_CASE',' ',' ' 
+			!STR='RZ'
+			!STR=STRCAT(STR,CHRVAL(CASEPOINTER))
+			!FILE,'LOAD_CASE',STR
+			STR='LOAD_CASE_'
+			STR=STRCAT(STR,CHRVAL(CASEPOINTER))
+			!SET,1 
+			!RESWRITE, STR
+			!RAPPND,1,1
+		*ENDIF
+	*ENDDO
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	*DO,CASEPOINTER,1,9,1
+		/SOL
+		ALLSEL, ALL
+		CSYS, 1
+		cuttingforce_angle=240-(CASEPOINTER-1)*15
+		cuttingforce_node=NODE(outer_radius, cuttingforce_angle, ring_depth-0.010)
+		!FDELE,ALL,ALL   
+		F, cuttingforce_node, FX, cuttingforce_rad 
+		F, cuttingforce_node, FY, cuttingforce_tan 
+		F, cuttingforce_node, FZ, cuttingforce_ax  
+		CSYS, 0 
+		ALLSEL, ALL
+		!Заменить на SOLVE
+		*MSG, UI, CASEPOINTER
+		CASEPOINTER = %I
+		!
+		
+		*IF,CASEPOINTER,LT,10,THEN
+			/SOLU 
+			!SOLVE
+			/POST1
+			!LCWRITE,CASEPOINTER,'LOAD_CASE',' ',' ' 
+			!STR='RZ'
+			!STR=STRCAT(STR,CHRVAL(CASEPOINTER))
+			!FILE,'LOAD_CASE',STR
+			STR='LOAD_CASE_'
+			STR=STRCAT(STR,CHRVAL(CASEPOINTER))
+			!SET,1 
+			!RESWRITE, STR
+			!RAPPND,1,1
+		*ENDIF
+	*ENDDO
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	*DO,CASEPOINTER,1,9,1
+		/SOL
+		ALLSEL, ALL
+		CSYS, 1
+		cuttingforce_angle=240-(CASEPOINTER-1)*15
+		cuttingforce_node=NODE(outer_radius, cuttingforce_angle, ring_depth-0.020)
+		!FDELE,ALL,ALL   
+		F, cuttingforce_node, FX, cuttingforce_rad 
+		F, cuttingforce_node, FY, cuttingforce_tan 
+		F, cuttingforce_node, FZ, cuttingforce_ax  
+		CSYS, 0 
+		ALLSEL, ALL
+		!Заменить на SOLVE
+		*MSG, UI, CASEPOINTER
+		CASEPOINTER = %I
+		!
+		
+		*IF,CASEPOINTER,LT,10,THEN
+			/SOLU 
+			!SOLVE
+			/POST1
+			!LCWRITE,CASEPOINTER,'LOAD_CASE',' ',' ' 
+			!STR='RZ'
+			!STR=STRCAT(STR,CHRVAL(CASEPOINTER))
+			!FILE,'LOAD_CASE',STR
+			STR='LOAD_CASE_'
+			STR=STRCAT(STR,CHRVAL(CASEPOINTER))
+			!SET,1 
+			!RESWRITE, STR
+			!RAPPND,1,1
+		*ENDIF
+	*ENDDO
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	ENDFL=1
+	SAVE,'reserveDB','db',DIR_STR(1)
+	*MSG, UI
+	"ALL STEPS SOLVED"
+*ELSE
+	*MSG, UI
+	"ALREADY SOLVED"
+*ENDIF
