@@ -26,9 +26,10 @@ public class Node {
         this.description = "";
     }
 
-    public Node(String name, String description) {
+    public Node(String name, String description, String value) {
         this.name = name;
         this.description = description;
+        this.value = value;
     }
     
     public List<Node> getChildren() {

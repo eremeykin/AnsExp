@@ -7,6 +7,7 @@ package ansexp;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,10 +20,15 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-
-        XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/NetBeansProjects/AnsExp/src/XML/model2.xml"));
-        outline1 = new OutlineCreator(parser.getResult()).getOutline();
-        jScrollPane1.setViewportView(outline1);
+        try {
+            XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/XML/model2.xml"));
+            outline1 = new OutlineCreator(parser.getResult()).getOutline();
+            jScrollPane1.setViewportView(outline1);
+        } catch (XMLParser.XMLParsingException exc) {
+            JOptionPane.showMessageDialog(this, "Произошла ошибка при чтении XML файла."
+                    + "Файл не может быть открыт");
+            JOptionPane.showMessageDialog(this, exc);
+        }
 
     }
 
@@ -79,6 +85,7 @@ public class MainForm extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -86,12 +93,18 @@ public class MainForm extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         int res = fileChooser.showDialog(jMenu1, "Открыть модель");
         if (res == JFileChooser.APPROVE_OPTION) {
-            XMLParser parser = XMLParser.getInstance(fileChooser.getSelectedFile());
+            try {
+                XMLParser parser = XMLParser.getInstance(fileChooser.getSelectedFile());
+                outline1 = new OutlineCreator(parser.getResult()).getOutline();
+                jScrollPane1.repaint();
+                jScrollPane1.setViewportView(outline1);
+                jScrollPane1.repaint();
+            } catch (XMLParser.XMLParsingException exc) {
+                JOptionPane.showMessageDialog(this, "Произошла ошибка при чтении XML файла."
+                        + "Файл не может быть открыт");
+                JOptionPane.showMessageDialog(this, exc);
+            }
             //System.out.println(parser.getResult());
-            outline1 = new OutlineCreator(parser.getResult()).getOutline();
-            jScrollPane1.repaint();
-            jScrollPane1.setViewportView(outline1);
-            jScrollPane1.repaint();
 
         }
 

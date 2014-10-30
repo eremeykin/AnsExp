@@ -6,7 +6,6 @@
 package ansexp;
 
 import java.io.File;
-import javax.swing.JOptionPane;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
@@ -25,7 +24,7 @@ public class XMLParser {
         result = new Node("Root");
     }
 
-    public static XMLParser getInstance(File file) {
+    public static XMLParser getInstance(File file) throws XMLParsingException {
         parser.xmlFile = file;
         parser.document = parser.getDocument();
         return parser;
@@ -40,8 +39,11 @@ public class XMLParser {
                 org.w3c.dom.Node currXMLNode = xmlNode.getChildNodes().item(i);
                 //Устанавливаем текущий ТreeTable узел
 
-                String name = getNameAttribute(currXMLNode);
-                Node currNode = new Node(name);
+                String name = getAttribute(currXMLNode, "name");
+                String description = getAttribute(currXMLNode, "description");
+                String value = getAttribute(currXMLNode, "value");
+
+                Node currNode = new Node(name,description, value);
                 //Добавляем текущий TreeTable узел в соответствующий пердыдущий узел TreeTable
                 node.getChildren().add(currNode);
                 //Вызываем для метод для текущих узлов
@@ -50,16 +52,16 @@ public class XMLParser {
         }
     }
 
-    private String getNameAttribute(org.w3c.dom.Node node) {
+    private String getAttribute(org.w3c.dom.Node node, String attrName) {
         for (int i = 0; i < node.getAttributes().getLength(); i++) {
-            if (node.getAttributes().item(i).getNodeName().equals("name")) {
+            if (node.getAttributes().item(i).getNodeName().equals(attrName)) {
                 return node.getAttributes().item(i).getTextContent();
             }
         }
         return null;
     }
 
-    private Document getDocument() {
+    private Document getDocument() throws XMLParsingException {
         Document doc = null;
         try {
             DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
@@ -67,10 +69,8 @@ public class XMLParser {
             DocumentBuilder builder = f.newDocumentBuilder();
             doc = builder.parse(this.xmlFile);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Произошла ошибка при чтении XML файла."
-                    + "Программа будет закрыта");
-            JOptionPane.showMessageDialog(null, e);
-            System.exit(-1);
+
+            throw new XMLParsingException(e);
         }
         return doc;
     }
@@ -81,4 +81,10 @@ public class XMLParser {
         return result;
     }
 
+    class XMLParsingException extends Exception {
+
+        XMLParsingException(Throwable e) {
+            super(e);
+        }
+    }
 }

@@ -15,7 +15,7 @@ and open the template in the editor.
         <node name="Длина">
         </node>
     </node>
-    <node name="Кулачек">
+    <node name="Кулачок">
         <node name="Ширина">
         </node>
         <node name="Высота">
