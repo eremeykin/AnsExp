@@ -5,17 +5,8 @@
  */
 package ansexp;
 
-import static ansexp.Models.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.table.TableCellEditor;
-import javax.swing.tree.TreeModel;
-import org.netbeans.swing.outline.DefaultOutlineModel;
-import org.netbeans.swing.outline.Outline;
-import org.netbeans.swing.outline.OutlineModel;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -29,53 +20,8 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
 
-        List<TableCellEditor> editors = new ArrayList<TableCellEditor>(3);
-
-        String[] items1 = {"Red", "Blue", "Green"};
-        JComboBox comboBox1 = new JComboBox(items1);
-        DefaultCellEditor dce1 = new DefaultCellEditor(comboBox1);
-        editors.add(dce1);
-
-        String[] items2 = {"Circle", "Square", "Triangle"};
-        JComboBox comboBox2 = new JComboBox(items2);
-        DefaultCellEditor dce2 = new DefaultCellEditor(comboBox2);
-        editors.add(dce2);
-
-        String[] items3 = {"Apple", "Orange", "Banana"};
-        JComboBox comboBox3 = new JComboBox(items3);
-        DefaultCellEditor dce3 = new DefaultCellEditor(comboBox3);
-        editors.add(dce3);
-
         XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/NetBeansProjects/AnsExp/src/XML/model2.xml"));
-        //parser.parseToResult();
-        TreeModel treeMdl = new TreeTableModel(parser.getResult());
-        //Create the Outline's model, consisting of the TreeModel and the RowModel,
-        //together with two optional values: a boolen for something or other,
-        //and the display name for the first column:
-        OutlineModel mdl = DefaultOutlineModel.createOutlineModel(treeMdl, new TreeTableRowModel(), true, "Название");
-
-        //Initialize the Outline object:
-        outline1 = new Outline() {
-            @Override
-            public TableCellEditor getCellEditor(int row, int column) {
-                System.out.println("row:"+row+" column:"+column);
-                int modelColumn = convertColumnIndexToModel(column);
-
-                if (modelColumn == 2 && row < 3 && row!=1) {
-                    return editors.get(row);
-                } else {
-                    return super.getCellEditor(row, column);
-                }
-            }
-
-        };
-
-        outline1.setRootVisible(false);
-
-        //Assign the model to the Outline object:
-        outline1.setModel(mdl);
-
-        //Add the Outline object to the JScrollPane:
+        outline1 = new OutlineCreator(parser.getResult()).getOutline();
         jScrollPane1.setViewportView(outline1);
 
     }
@@ -136,7 +82,19 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        new FileDialog().setVisible(true);
+        //FileDialog fd = new FileDialog();
+        JFileChooser fileChooser = new JFileChooser();
+        int res = fileChooser.showDialog(jMenu1, "Открыть модель");
+        if (res == JFileChooser.APPROVE_OPTION) {
+            XMLParser parser = XMLParser.getInstance(fileChooser.getSelectedFile());
+            //System.out.println(parser.getResult());
+            outline1 = new OutlineCreator(parser.getResult()).getOutline();
+            jScrollPane1.repaint();
+            jScrollPane1.setViewportView(outline1);
+            jScrollPane1.repaint();
+
+        }
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -150,7 +108,6 @@ public class MainForm extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                System.out.println(info);
                 if ("GTK+".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;

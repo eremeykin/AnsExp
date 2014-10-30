@@ -5,6 +5,8 @@
  */
 package ansexp;
 
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author eremeykin
@@ -31,6 +33,12 @@ public class FileDialog extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jFileChooser1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFileChooser1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -45,6 +53,13 @@ public class FileDialog extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
+        // TODO add your handling code here:
+        if (evt.getActionCommand().equals(JFileChooser.APPROVE_OPTION)) {
+            System.out.println(evt);
+        }
+    }//GEN-LAST:event_jFileChooser1ActionPerformed
 
     /**
      * @param args the command line arguments
