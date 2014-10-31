@@ -14,11 +14,11 @@ import org.netbeans.swing.outline.RowModel;
  */
 public class Models {
 
-    public static class TreeTableModel implements TreeModel {
+    public static class PropertiesModel implements TreeModel {
 
         private Node root;
 
-        public TreeTableModel(Node root) {
+        public PropertiesModel(Node root) {
             this.root = root;
         }
 

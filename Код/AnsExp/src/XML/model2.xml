@@ -34,6 +34,11 @@ and open the template in the editor.
             <description></description>
             <value></value>
             <node>
+                <name>Название</name>
+                <description>Название материала</description>
+                <value editor="comboBox" table="part_material"></value>
+            </node>
+            <node>
                 <name>Модуль упругости</name>
                 <description>Значение модуля упругости (Юнга) для материала детали [МПа]</description>
                 <value></value>

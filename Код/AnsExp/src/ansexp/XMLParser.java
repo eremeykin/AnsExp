@@ -6,6 +6,8 @@
 package ansexp;
 
 import java.io.File;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
@@ -21,7 +23,7 @@ public class XMLParser {
     private Document document;
 
     private XMLParser() {
-        result = new Node("Root");
+        result = new Node("Root", "", "", null);
     }
 
     public static XMLParser getInstance(File file) throws XMLParsingException {
@@ -31,6 +33,21 @@ public class XMLParser {
     }
 
     public void parseToResult(org.w3c.dom.Node xmlNode, Node node) {
+        class Helper {
+
+            public DefaultCellEditor makeEditorForXMLNode(org.w3c.dom.Node node) {
+                String[] items1 = {"Red", "Blue", "Green"};
+                for (int i = 0; i < node.getChildNodes().getLength(); i++) {
+                    if (node.getChildNodes().item(i).getNodeName().equals("value")) {
+                        String editorType =getAttribute(node.getChildNodes().item(i), "editor");
+                        if(editorType!=null && editorType.equals("comboBox"))
+                            return new DefaultCellEditor(new JComboBox(items1));
+                    }
+                }
+
+                return null;
+            }
+        }
         //Для всех потомков узла
         for (int i = 0; i < xmlNode.getChildNodes().getLength(); i++) {
             //Устанавливаем текущий XML узел
@@ -38,12 +55,14 @@ public class XMLParser {
             //Если этот узел типа элемент (комментарии и текст отбрасывается)
             if (currXMLNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                 if (currXMLNode.getNodeName().equals("node") || currXMLNode.getNodeName().equals("root")) {
-                    
+
                     String name = getSign(currXMLNode, "name");
                     String description = getSign(currXMLNode, "description");
                     String value = getSign(currXMLNode, "value");
 
-                    Node currNode = new Node(name, description, value);
+                    DefaultCellEditor editor = new Helper().makeEditorForXMLNode(currXMLNode);
+
+                    Node currNode = new Node(name, description, value, editor);
                     //Добавляем текущий TreeTable узел в соответствующий пердыдущий узел TreeTable
                     node.getChildren().add(currNode);
                     //Вызываем для метод для текущих узлов
@@ -86,8 +105,8 @@ public class XMLParser {
         return doc;
     }
 
-    public Node getResult() {
-        result = new Node("Root");
+    public Node getResultNode() {
+        result = new Node("Root", "", "", null);
         parseToResult(document, result);
         return result;
     }
