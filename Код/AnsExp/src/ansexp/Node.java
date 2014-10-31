@@ -12,7 +12,6 @@ import java.util.List;
  *
  * @author eremeykin
  */
-
 public class Node {
 
     private final String name;
@@ -31,21 +30,45 @@ public class Node {
         this.description = description;
         this.value = value;
     }
-    
+
     public List<Node> getChildren() {
         return children;
     }
-    
-    public String getDescription(){
+
+    public String getDescription() {
         return this.description;
     }
-    
-    public String getValue(){
-        return  this.value;
+
+    public String getValue() {
+        return this.value;
     }
-    
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
+    }
+
+    public boolean isLeaf() {
+        return children.isEmpty();
+    }
+
+    private static String printSpace(int count) {
+        String result = "";
+        for (int i =0;i<count;i++)
+            result+="  ";
+        return result;
+    }
+
+    public static String printChildren(Node node,int count) {
+        String result = node.name;
+        count++;
+        for (Node n : node.getChildren()) {
+            result +="\n "+printSpace(count) +printChildren(n,count);
+        }
+        return result;
     }
 }

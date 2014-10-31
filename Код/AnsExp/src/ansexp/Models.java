@@ -35,7 +35,7 @@ public class Models {
 
         @Override
         public int getChildCount(Object parent) {
-            Node node = (Node)parent;
+            Node node = (Node) parent;
             return node.getChildren().size();
         }
 
@@ -53,7 +53,7 @@ public class Models {
 
         @Override
         public boolean isLeaf(Object node) {
-            return ((Node)node).getChildren().isEmpty();
+            return ((Node) node).getChildren().isEmpty();
         }
 
         @Override
@@ -109,14 +109,15 @@ public class Models {
 
         @Override
         public boolean isCellEditable(Object node, int column) {
-            return true;
+            return column == 1;
         }
 
         @Override
         public void setValueFor(Object node, int column, Object value) {
             //do nothing for now
+            Node n = (Node) node;
+            n.setValue(value.toString());
         }
 
     }
 }
-

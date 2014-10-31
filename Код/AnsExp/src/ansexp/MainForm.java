@@ -89,7 +89,8 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        //FileDialog fd = new FileDialog();
+        String debug = Node.printChildren((Node) outline1.getOutlineModel().getRoot(),0);
+        System.out.println(debug);
         JFileChooser fileChooser = new JFileChooser();
         int res = fileChooser.showDialog(jMenu1, "Открыть модель");
         if (res == JFileChooser.APPROVE_OPTION) {

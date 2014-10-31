@@ -38,12 +38,7 @@ public class XMLParser {
             //Если этот узел типа элемент (комментарии и текст отбрасывается)
             if (currXMLNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                 if (currXMLNode.getNodeName().equals("node") || currXMLNode.getNodeName().equals("root")) {
-                    //Пере устанавливаем текущий XML узел
-                    //currXMLNode = xmlNode.getChildNodes().item(i);
-//                Устанавливаем текущий ТreeTable узел
-//                String name = getAttribute(currXMLNode, "name");
-//                String description = getAttribute(currXMLNode, "description");
-//                String value = getAttribute(currXMLNode, "value");
+                    
                     String name = getSign(currXMLNode, "name");
                     String description = getSign(currXMLNode, "description");
                     String value = getSign(currXMLNode, "value");
