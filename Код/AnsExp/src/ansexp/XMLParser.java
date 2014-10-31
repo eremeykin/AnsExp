@@ -33,21 +33,27 @@ public class XMLParser {
     public void parseToResult(org.w3c.dom.Node xmlNode, Node node) {
         //Для всех потомков узла
         for (int i = 0; i < xmlNode.getChildNodes().getLength(); i++) {
+            //Устанавливаем текущий XML узел
+            org.w3c.dom.Node currXMLNode = xmlNode.getChildNodes().item(i);
             //Если этот узел типа элемент (комментарии и текст отбрасывается)
-            if (xmlNode.getChildNodes().item(i).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
-                //Устанавливаем текущий XML узел
-                org.w3c.dom.Node currXMLNode = xmlNode.getChildNodes().item(i);
-                //Устанавливаем текущий ТreeTable узел
+            if (currXMLNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+                if (currXMLNode.getNodeName().equals("node") || currXMLNode.getNodeName().equals("root")) {
+                    //Пере устанавливаем текущий XML узел
+                    //currXMLNode = xmlNode.getChildNodes().item(i);
+//                Устанавливаем текущий ТreeTable узел
+//                String name = getAttribute(currXMLNode, "name");
+//                String description = getAttribute(currXMLNode, "description");
+//                String value = getAttribute(currXMLNode, "value");
+                    String name = getSign(currXMLNode, "name");
+                    String description = getSign(currXMLNode, "description");
+                    String value = getSign(currXMLNode, "value");
 
-                String name = getAttribute(currXMLNode, "name");
-                String description = getAttribute(currXMLNode, "description");
-                String value = getAttribute(currXMLNode, "value");
-
-                Node currNode = new Node(name,description, value);
-                //Добавляем текущий TreeTable узел в соответствующий пердыдущий узел TreeTable
-                node.getChildren().add(currNode);
-                //Вызываем для метод для текущих узлов
-                parseToResult(currXMLNode, currNode);
+                    Node currNode = new Node(name, description, value);
+                    //Добавляем текущий TreeTable узел в соответствующий пердыдущий узел TreeTable
+                    node.getChildren().add(currNode);
+                    //Вызываем для метод для текущих узлов
+                    parseToResult(currXMLNode, currNode);
+                }
             }
         }
     }
@@ -59,6 +65,16 @@ public class XMLParser {
             }
         }
         return null;
+    }
+
+    private String getSign(org.w3c.dom.Node node, String signName) {
+        NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            if (signName.equals(children.item(i).getNodeName())) {
+                return children.item(i).getTextContent();
+            }
+        }
+        return "undefined";
     }
 
     private Document getDocument() throws XMLParsingException {
@@ -77,7 +93,7 @@ public class XMLParser {
 
     public Node getResult() {
         result = new Node("Root");
-        this.parseToResult(document, result);
+        parseToResult(document, result);
         return result;
     }
 

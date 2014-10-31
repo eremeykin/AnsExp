@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<root name="Модель" description="" value="">
+    <node name="Деталь" description="" value="">
+        <node name="Внешний радиус" description="Внешний радиус цилиндрической детали [мм]" value="">
+        </node>
+        <node name="Внутренний радиус" description="Внешний радиус цилиндрической детали [мм]" value="">
+        </node>
+        <node name="Длина" description="Высота цилиндра [мм]" value="">
+        </node>
+        <node name="Материал" description="" value="">
+            <node name="Модуль упругости" description="Значение модуля упругости (Юнга) для материала детали [МПа]" value="">
+            </node>
+            <node name="Коэффициент Пуассона" description="Значение коэффициента Пуассона для материала детали [-]" value="">
+            </node>
+        </node>
+    </node>
+    <node name="Кулачки" description="" value="">
+        <node name="Количество" description="Количество кулачков, используемых для закрепления детали" value="">
+        </node>
+        <node name="Величина смещения" description="Величина смещения каждого из кулачков в радиальном направлении при закреплении [мкм]" value="">
+        </node>
+        <node name="Размеры" description="" value="">
+            <node name="Длина" description="Длина кулачка [мм]" value="">
+            </node>
+            <node name="Высота" description="Высота кулачка [мм]" value="">
+            </node>
+            <node name="Ширина" description="Ширина кулачка [мм]" value="">
+            </node>
+        </node>
+        <node name="Материал" description="" value="">
+            <node name="Модуль упругости" description="Значение модуля упругости (Юнга) для материала кулачка [МПа]" value="">
+            </node>
+            <node name="Коэффициент Пуассона" description="Значение коэффициента Пуассона для материала кулачка [-]" value="">
+            </node>
+        </node>
+    </node>
+    <node name="Силы резания" description="" value="">
+        <node name="Проекции" description="">
+            <node name ="Касательная, Ftan" description="Касательная составляющая силы резания [Н]" value="">
+            </node>
+            <node name ="Радиальная, Frad" description="Радиальная составляющая силы резания [Н]" value="">
+            </node>
+            <node name ="Осевая, Fax" description="Осевая составляющая силы резания [Н]" value="">
+            </node>
+        </node>
+        <node name="Угловое положение" description="Угловое положение силы резания [рад]" value="">
+        </node>
+    </node>
+</root>

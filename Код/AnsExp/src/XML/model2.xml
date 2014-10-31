@@ -7,50 +7,122 @@ and open the template in the editor.
 
 
 <root name="Модель" description="" value="">
-    <node name="Деталь" description="" value="">
-        <node name="Внешний радиус" description="Внешний радиус цилиндрической детали [мм]" value="">
+    <name>Модель</name>
+    <description></description>
+    <value></value>
+    <node>
+        <name>Деталь</name>
+        <description></description>
+        <value></value>
+        <node>
+            <name>Внешний радиус</name>
+            <description>Внешний радиус цилиндрической детали [мм]</description>
+            <value></value>
         </node>
-        <node name="Внутренний радиус" description="Внешний радиус цилиндрической детали [мм]" value="">
+        <node>
+            <name>Внутренний радиус</name>
+            <description>Внешний радиус цилиндрической детали [мм]</description>
+            <value></value>
         </node>
-        <node name="Длина" description="Высота цилиндра [мм]" value="">
+        <node>
+            <name>Длина</name>
+            <description>Высота цилиндра [мм]</description>
+            <value></value>
         </node>
-        <node name="Материал" description="" value="">
-            <node name="Модуль упругости" description="Значение модуля упругости (Юнга) для материала детали [МПа]" value="">
+        <node>
+            <name>Материал</name>
+            <description></description>
+            <value></value>
+            <node>
+                <name>Модуль упругости</name>
+                <description>Значение модуля упругости (Юнга) для материала детали [МПа]</description>
+                <value></value>
             </node>
-            <node name="Коэффициент Пуассона" description="Значение коэффициента Пуассона для материала детали [-]" value="">
+            <node>
+                <name>Коэффициент Пуассона</name>
+                <description>Значение коэффициента Пуассона для материала детали [-]</description>
+                <value></value>
             </node>
         </node>
     </node>
-    <node name="Кулачки" description="" value="">
-        <node name="Количество" description="Количество кулачков, используемых для закрепления детали" value="">
+    <node>
+        <name>Кулачки</name>
+        <description></description>
+        <value></value>
+        <node>
+            <name>Количество</name>
+            <description>Количество кулачков, используемых для закрепления детали</description>
+            <value></value>
         </node>
-        <node name="Величина смещения" description="Величина смещения каждого из кулачков в радиальном направлении при закреплении [мкм]" value="">
+        <node>
+            <name>Величина смещения</name>
+            <description>Величина смещения каждого из кулачков в радиальном направлении при закреплении [мкм]</description>
+            <value></value>       
         </node>
-        <node name="Размеры" description="" value="">
-            <node name="Длина" description="Длина кулачка [мм]" value="">
+        <node>
+            <name>Размеры</name>
+            <description></description>
+            <value></value>
+            <node>
+                <name>Длина</name>
+                <description>Длина кулачка [мм]</description>
+                <value></value>
             </node>
-            <node name="Высота" description="Высота кулачка [мм]" value="">
+            <node>
+                <name>Высота</name>
+                <description>Высота кулачка [мм]</description>
+                <value></value>
             </node>
-            <node name="Ширина" description="Ширина кулачка [мм]" value="">
+            <node>
+                <name>Ширина</name>
+                <description>Ширина кулачка [мм]</description>
+                <value></value>
             </node>
         </node>
-        <node name="Материал" description="" value="">
-            <node name="Модуль упругости" description="Значение модуля упругости (Юнга) для материала кулачка [МПа]" value="">
+        <node>
+            <name>Материал</name>
+            <description></description>
+            <value></value>
+            <node>
+                <name>Модуль упругости</name>
+                <description>Значение модуля упругости (Юнга) для материала кулачка [МПа]</description>
+                <value></value>
             </node>
-            <node name="Коэффициент Пуассона" description="Значение коэффициента Пуассона для материала кулачка [-]" value="">
+            <node>
+                <name>Коэффициент Пуассона</name>
+                <description>Значение коэффициента Пуассона для материала кулачка [-]</description>
+                <value></value>
             </node>
         </node>
     </node>
-    <node name="Силы резания" description="" value="">
-        <node name="Проекции" description="">
-            <node name ="Касательная, Ftan" description="Касательная составляющая силы резания [Н]" value="">
+    <node>
+        <name>Силы резания</name>
+        <description></description>
+        <value></value>
+        <node>
+            <name>Проекции</name>
+            <description></description>
+            <value></value>
+            <node>
+                <name>Касательная, Ftan</name>
+                <description>Касательная составляющая силы резания [Н]</description>
+                <value></value>
             </node>
-            <node name ="Радиальная, Frad" description="Радиальная составляющая силы резания [Н]" value="">
+            <node>
+                <name>Радиальная, Frad</name>
+                <description>Радиальная составляющая силы резания [Н]</description>
+                <value></value>      
             </node>
-            <node name ="Осевая, Fax" description="Осевая составляющая силы резания [Н]" value="">
+            <node>
+                <name>Осевая, Fax</name>
+                <description>Осевая составляющая силы резания [Н]</description>
+                <value></value> 
             </node>
         </node>
-        <node name="Угловое положение" description="Угловое положение силы резания [рад]" value="">
+        <node>
+            <name>Угловое положение</name>
+            <description>Угловое положение силы резания [рад]</description>
+            <value></value>
         </node>
     </node>
 </root>
