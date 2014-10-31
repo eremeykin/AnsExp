@@ -20,7 +20,6 @@ import org.netbeans.swing.outline.OutlineModel;
 public class OutlineCreator {
 
     private Outline outline;
-    private Node root;
 
     public OutlineCreator(Node root) {
 
@@ -34,13 +33,11 @@ public class OutlineCreator {
                 int modelColumn = convertColumnIndexToModel(column);
                 ArrayList<DefaultCellEditor> editors = new ArrayList<>();
                 Node.getEditors(editors, root);
-                return editors.get(row);
-
-//                if (modelColumn == 1 && row < 3) {
-//                    return null;//editors.get(row);
-//                } else {
-//                    return super.getCellEditor(row, column);
-//                }
+                if (editors.get(row) != null) {
+                    return editors.get(row);
+                } else {
+                 return super.getCellEditor(row,column);
+                }
             }
         };
         outline.setRootVisible(false);
