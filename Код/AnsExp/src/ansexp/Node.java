@@ -56,18 +56,21 @@ public class Node {
         return children.isEmpty();
     }
 
-    private static String printSpace(int count) {
-        String result = "";
-        for (int i =0;i<count;i++)
-            result+="  ";
-        return result;
-    }
+    public static String printChildren(Node node, int count) {
+        class Helper {
 
-    public static String printChildren(Node node,int count) {
-        String result = node.name;
+            private String printSpace(int count) {
+                String result = "";
+                for (int i = 0; i < count; i++) {
+                    result += "  ";
+                }
+                return result;
+            }
+        }
+        String result = node.name + "(" + "-" + ",=" + node.value + ")";
         count++;
         for (Node n : node.getChildren()) {
-            result +="\n "+printSpace(count) +printChildren(n,count);
+            result += "\n " + new Helper().printSpace(count) + printChildren(n, count);
         }
         return result;
     }
