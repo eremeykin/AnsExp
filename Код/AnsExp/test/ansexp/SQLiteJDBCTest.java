@@ -71,7 +71,7 @@ public class SQLiteJDBCTest {
         String tableName = "part_material";
         String columnName = "name";
         SQLiteJDBC instance = SQLiteJDBC.getInstance();
-        instance.setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/database/mainDB.sqlite"));
+        instance.setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
         String[] expResult = new String[]{
             "Сталь легированная",
             "Сталь углеродистая",
@@ -80,8 +80,6 @@ public class SQLiteJDBCTest {
             "Чугун серый"};
         String[] result = instance.getItemsList(tableName, columnName);
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**

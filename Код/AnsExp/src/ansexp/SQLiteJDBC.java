@@ -25,20 +25,23 @@ public class SQLiteJDBC {
         dbFile = file;
     }
 
-    public String[] getItemsList(String tableName, String columnName) throws SQLException {
-        List<String> items = new ArrayList<>();
+    public String[] getItemsList(String tableName, String columnName) throws SQLException, UndefinedDBFile {
+        try {
+            List<String> items = new ArrayList<>();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select " + columnName + " from " + tableName + ";");
 
-        Statement st = connection.createStatement();
-        ResultSet rs = st.executeQuery("select " + columnName + " from " + tableName + ";");
+            while (rs.next()) {
+                String currString = rs.getString(columnName);
+                items.add(currString);
+            }
 
-        while (rs.next()) {
-            String currString = rs.getString(columnName);
-            items.add(currString);
+            String[] result = new String[items.size()];
+            items.toArray(result);
+            return result;
+        } catch (NullPointerException ex) {
+            throw new UndefinedDBFile(ex);
         }
-
-        String[] result = new String[items.size()];
-        items.toArray(result);
-        return result;
     }
 
     public void test() throws Exception {
@@ -63,5 +66,12 @@ public class SQLiteJDBC {
             throw e;
         }
         System.out.println("Opened database successfully");
+    }
+
+    class UndefinedDBFile extends Exception {
+
+        public UndefinedDBFile(Throwable e) {
+            super(e);
+        }
     }
 }

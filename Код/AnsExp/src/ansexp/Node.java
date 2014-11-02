@@ -6,7 +6,9 @@
 package ansexp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultCellEditor;
 
 /**
@@ -18,7 +20,7 @@ public class Node {
     private final String name;
     private String value;
     private final String description;
-    private DefaultCellEditor editor;
+    private final DefaultCellEditor editor;
 
     private final List<Node> children = new ArrayList<>();
 
@@ -54,6 +56,12 @@ public class Node {
         return children.isEmpty();
     }
 
+    /**
+     * Generates a string representation of the node in the tree view
+     * @param node
+     * @param count
+     * @return string representation
+     */
     public static String printChildren(Node node, int count) {
         class Helper {
 
@@ -73,11 +81,37 @@ public class Node {
         return result;
     }
     
-    public static void getEditors(ArrayList<DefaultCellEditor> res,Node node){
-        //ArrayList<DefaultCellEditor> result = new ArrayList<>();
+    /**
+     * Copies all the editors of the nodes into the specified ArrayList
+     * @param res result ArrayList with all the editors
+     * @param node the root Node
+     */
+    public static void getEditors(List<DefaultCellEditor> res,Node node){
         for (Node n : node.children){
             res.add(n.editor);
             getEditors(res,n);
         }
+    }
+    
+    /**
+     * Copies all the nodes into the specified ArrayList
+     * @param res result ArrayList with all the Nodes
+     * @param root the root Node
+     */
+    private static void getNodes(List<Node> res,Node root){
+        for (Node n : root.children){
+            res.add(n);
+            getNodes(res,n);
+        }
+    }
+    
+    public Map<String,String> spreadToMap(){
+        Map<String,String> result = new HashMap<>();
+        List<Node> nodes = new ArrayList<>();
+        getNodes(nodes, this);
+        for (Node node: nodes){
+            result.put(node.name, node.value);
+        }
+       return result; 
     }
 }

@@ -34,10 +34,10 @@ public class XMLParser {
         return parser;
     }
 
-    public void parseToResult(org.w3c.dom.Node xmlNode, Node node) throws SQLException {
+    private void parseToResult(org.w3c.dom.Node xmlNode, Node node) throws SQLException, SQLiteJDBC.UndefinedDBFile {
         class Helper {
 
-            public DefaultCellEditor makeEditorForXMLNode(org.w3c.dom.Node node) throws SQLException {
+            public DefaultCellEditor makeEditorForXMLNode(org.w3c.dom.Node node) throws SQLException, SQLiteJDBC.UndefinedDBFile {
                 for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                     //Если обнаружен узел value
                     if (node.getChildNodes().item(i).getNodeName().equals("value")) {
@@ -117,7 +117,7 @@ public class XMLParser {
         return doc;
     }
 
-    public Node getResultNode() throws SQLException {
+    public Node getResultNode() throws SQLException, SQLiteJDBC.UndefinedDBFile {
         result = new Node("Root", "", "", null);
         parseToResult(document, result);
         return result;

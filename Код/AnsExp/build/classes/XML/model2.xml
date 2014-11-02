@@ -22,12 +22,12 @@ and open the template in the editor.
         <node>
             <name>Внутренний радиус</name>
             <description>Внешний радиус цилиндрической детали [мм]</description>
-            <value></value>
+            <value editor="textField"></value>
         </node>
         <node>
             <name>Длина</name>
             <description>Высота цилиндра [мм]</description>
-            <value></value>
+            <value editor="textField"></value>
         </node>
         <node>
             <name>Материал</name>
@@ -55,14 +55,9 @@ and open the template in the editor.
         <description></description>
         <value></value>
         <node>
-            <name>Количество</name>
-            <description>Количество кулачков, используемых для закрепления детали</description>
-            <value></value>
-        </node>
-        <node>
             <name>Величина смещения</name>
             <description>Величина смещения каждого из кулачков в радиальном направлении при закреплении [мкм]</description>
-            <value></value>       
+            <value editor="textField"></value>       
         </node>
         <node>
             <name>Размеры</name>
@@ -71,17 +66,17 @@ and open the template in the editor.
             <node>
                 <name>Длина</name>
                 <description>Длина кулачка [мм]</description>
-                <value></value>
+                <value editor="textField"></value>
             </node>
             <node>
                 <name>Высота</name>
                 <description>Высота кулачка [мм]</description>
-                <value></value>
+                <value editor="textField"></value>
             </node>
             <node>
                 <name>Ширина</name>
                 <description>Ширина кулачка [мм]</description>
-                <value></value>
+                <value editor="textField"></value>
             </node>
         </node>
         <node>
@@ -111,23 +106,23 @@ and open the template in the editor.
             <node>
                 <name>Касательная, Ftan</name>
                 <description>Касательная составляющая силы резания [Н]</description>
-                <value></value>
+                <value editor="textField"></value>
             </node>
             <node>
                 <name>Радиальная, Frad</name>
                 <description>Радиальная составляющая силы резания [Н]</description>
-                <value></value>      
+                <value editor="textField"></value>      
             </node>
             <node>
                 <name>Осевая, Fax</name>
                 <description>Осевая составляющая силы резания [Н]</description>
-                <value></value> 
+                <value editor="textField"></value> 
             </node>
         </node>
         <node>
             <name>Угловое положение</name>
             <description>Угловое положение силы резания [рад]</description>
-            <value></value>
+            <value editor="textField"></value>
         </node>
     </node>
 </root>
