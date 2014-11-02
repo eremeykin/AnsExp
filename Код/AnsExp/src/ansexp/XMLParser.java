@@ -6,8 +6,10 @@
 package ansexp;
 
 import java.io.File;
+import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JTextField;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
@@ -32,19 +34,29 @@ public class XMLParser {
         return parser;
     }
 
-    public void parseToResult(org.w3c.dom.Node xmlNode, Node node) {
+    public void parseToResult(org.w3c.dom.Node xmlNode, Node node) throws SQLException {
         class Helper {
 
-            public DefaultCellEditor makeEditorForXMLNode(org.w3c.dom.Node node) {
-                String[] items1 = {"Red", "Blue", "Green"};
+            public DefaultCellEditor makeEditorForXMLNode(org.w3c.dom.Node node) throws SQLException {
                 for (int i = 0; i < node.getChildNodes().getLength(); i++) {
+                    //Если обнаружен узел value
                     if (node.getChildNodes().item(i).getNodeName().equals("value")) {
-                        String editorType =getAttribute(node.getChildNodes().item(i), "editor");
-                        if(editorType!=null && editorType.equals("comboBox"))
-                            return new DefaultCellEditor(new JComboBox(items1));
+                        // Получить тип редактора
+                        String editorType = getAttribute(node.getChildNodes().item(i), "editor");
+                        // Если указан редактор comboBox
+                        if (editorType != null && editorType.equals("comboBox")) {
+                            //ToDo Получить из список из БД
+                            
+                            String[] items = SQLiteJDBC.getInstance().getItemsList("part_material", "name");
+                            return new DefaultCellEditor(new JComboBox(items));
+                        }
+                        // Если указан редактор textField
+                        if (editorType != null && editorType.equals("textField")) {
+                            return new DefaultCellEditor(new JTextField());
+                        }
                     }
                 }
-
+                // По умолчанию ячейка не редактируема
                 return null;
             }
         }
@@ -105,7 +117,7 @@ public class XMLParser {
         return doc;
     }
 
-    public Node getResultNode() {
+    public Node getResultNode() throws SQLException {
         result = new Node("Root", "", "", null);
         parseToResult(document, result);
         return result;

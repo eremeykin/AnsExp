@@ -65,7 +65,7 @@ public class Node {
                 return result;
             }
         }
-        String result = node.name + "(" + "-" + ",=" + node.value + ")";
+        String result = node.name + "(" + node.value + ")";
         count++;
         for (Node n : node.getChildren()) {
             result += "\n " + new Helper().printSpace(count) + printChildren(n, count);

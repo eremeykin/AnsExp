@@ -36,7 +36,7 @@ public class OutlineCreator {
                 if (editors.get(row) != null) {
                     return editors.get(row);
                 } else {
-                 return super.getCellEditor(row,column);
+                 return null;//super.getCellEditor(row,column);
                 }
             }
         };

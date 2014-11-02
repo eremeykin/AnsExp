@@ -1,14 +1,51 @@
 package ansexp;
 
+import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLiteJDBC {
 
-    public static void test() throws Exception {
+    private static SQLiteJDBC instance = new SQLiteJDBC();
+    private File dbFile;
+    private Connection connection = null;
+
+    private SQLiteJDBC() {
+
+    }
+
+    public static SQLiteJDBC getInstance() {
+        return instance;
+    }
+
+    public void setSourceFile(File file) throws ClassNotFoundException, SQLException {
+        Class.forName("org.sqlite.JDBC");
+        connection = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
+        dbFile = file;
+    }
+
+    public String[] getItemsList(String tableName, String columnName) throws SQLException {
+        List<String> items = new ArrayList<>();
+
+        Statement st = connection.createStatement();
+        ResultSet rs = st.executeQuery("select " + columnName + " from " + tableName + ";");
+
+        while (rs.next()) {
+            String currString = rs.getString(columnName);
+            items.add(currString);
+        }
+
+        String[] result = new String[items.size()];
+        items.toArray(result);
+        return result;
+    }
+
+    public void test() throws Exception {
         Connection c = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:/home/eremeykin/NetBeansProjects/AnsExp/src/database/test.sqlite");
+            c = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery("select * from test_table;");
             System.err.println("");

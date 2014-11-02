@@ -17,7 +17,7 @@ and open the template in the editor.
         <node>
             <name>Внешний радиус</name>
             <description>Внешний радиус цилиндрической детали [мм]</description>
-            <value></value>
+            <value editor="textField"></value>
         </node>
         <node>
             <name>Внутренний радиус</name>
@@ -36,7 +36,7 @@ and open the template in the editor.
             <node>
                 <name>Название</name>
                 <description>Название материала</description>
-                <value editor="comboBox" table="part_material"></value>
+                <value editor="comboBox" source="table:part_material"></value>
             </node>
             <node>
                 <name>Модуль упругости</name>
