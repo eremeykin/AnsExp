@@ -9,8 +9,6 @@ import ansexp.*;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -166,13 +164,13 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        Node root = (Node) outline1.getOutlineModel().getRoot();
-        System.out.println(Node.printChildren(root, 0));
-        try {
-            SQLiteJDBC.getInstance().test();
-        } catch (Exception ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        Node root = (Node) outline1.getOutlineModel().getRoot();
+//        System.out.println(Node.printChildren(root, 0));
+//        try {
+//            SQLiteJDBC.getInstance().test();
+//        } catch (Exception ex) {
+//            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 

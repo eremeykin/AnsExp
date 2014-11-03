@@ -5,46 +5,65 @@
  */
 package ansexp.calculator;
 
+import java.io.File;
+import java.util.EnumMap;
+
 /**
  *
  * @author eremeykin
  */
-public class DefaultCalculator implements Calculator {
+public class DefaultCalculator implements Calculator{
+
+    DataSource source;
+
 
     enum Vars {
 
-        INNER_RADIUS("Модель", "Деталь", "Внешний радиус"), 
-        OUTER_RADIUS("Модель", "Деталь", "Внeутренний радиус"), 
-        LENGTH("Модель", "Деталь", "Внешний радиус"),
-        PART_MATERIAL_NAME("Модель","Деталь","Материал","Название"),
-        PART_E_MODULUS("Модель","Деталь","Материал","Модуль упругости"), 
-        PART_POISSON("Модель","Деталь","Материал","Коэффициент Пуассона"), 
-        JAW_DELTA("Модель","Кулачки","Величина смещения"), 
-        JAW_LENGTH("Модель","Кулачки","Размеры","Длина"), 
-        JAW_WIDTH("Модель","Кулачки","Размеры","Ширина"), 
-        JAW_HEIGHT("Модель","Кулачки","Размеры","Высота"), 
-        JAW_E_MODULUS("Модель","Кулачки","Материал","Модуль упругости"), 
-        JAW_POISSON("Модель","Кулачки","Материал","Коэффициент Пуассона"),
-        FORCE_TAN("Модель","Силы резания","Проекции",""),
-        FORCE_RAD("Модель"),
-        FORCE_AX("Модель"),
-        FORCE_POS("Модель");
-        
-        private final String value;
-        
-        Vars(String... path){
-            this.value = null;//!!!
-            //this.value = source.getValueByPath(path);
-        }
-               
+        INNER_RADIUS,
+        OUTER_RADIUS,
+        LENGTH,
+        PART_MATERIAL_NAME,
+        PART_E_MODULUS,
+        PART_POISSON,
+        JAW_DELTA,
+        JAW_LENGTH,
+        JAW_WIDTH,
+        JAW_HEIGHT,
+        JAW_MATERIAL_NAME,
+        JAW_E_MODULUS,
+        JAW_POISSON,
+        FORCE_TAN,
+        FORCE_RAD,
+        FORCE_AX,
+        FORCE_POS;
     }
-    static DataSource source;
+    
+    EnumMap<Vars,String> v = new EnumMap<>(Vars.class);
+  
 
+    public DefaultCalculator(DataSource root) {
+        source = root;
+        for (Vars var : Vars.values()){
+            this.v.put(var, source.getValueById(var.name()));
+        }
+    }
 
+    public String printAllVars() {
+        
+        String result="";
+        for (Vars var :Vars.values()){
+            result+=var.name()+"="+this.v.get(var)+"\n";
+        }
+        return result;
+    }
+    
     @Override
     public DataSource calculate(DataSource root) {
-       // String innerRadiusStr = root.getValueByPath();
-        return  null;
+        return null;
     }
 
+    @Override
+    public File printToFile() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

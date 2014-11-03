@@ -45,7 +45,7 @@ public class XMLParser {
                         String editorType = getAttribute(node.getChildNodes().item(i), "editor");
                         // Если указан редактор comboBox
                         if (editorType != null && editorType.equals("comboBox")) {
-                            //ToDo Получить из список из БД
+                            //ToDo Получить из список из БД!!
 
                             String[] items = SQLiteJDBC.getInstance().getItemsList("part_material", "name");
                             return new DefaultCellEditor(new JComboBox(items));
@@ -71,10 +71,11 @@ public class XMLParser {
                     String name = getSign(currXMLNode, "name");
                     String description = getSign(currXMLNode, "description");
                     String value = getSign(currXMLNode, "value");
+                    String id = getAttribute(currXMLNode, "id");
 
                     DefaultCellEditor editor = new Helper().makeEditorForXMLNode(currXMLNode);
 
-                    Node currNode = new Node(name, description, value, null, editor);
+                    Node currNode = new Node(name, description, value, id, editor);
                     //Добавляем текущий TreeTable узел в соответствующий пердыдущий узел TreeTable
                     node.getChildren().add(currNode);
                     //Вызываем для метод для текущих узлов
@@ -118,7 +119,7 @@ public class XMLParser {
     }
 
     public Node getResultNode() throws SQLException, SQLiteJDBC.UndefinedDBFile {
-        result = new Node("Root", "", "",null, null);
+        result = new Node("Root", "", "", null, null);
         parseToResult(document, result);
         return result;
     }

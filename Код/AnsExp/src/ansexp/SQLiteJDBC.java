@@ -44,28 +44,19 @@ public class SQLiteJDBC {
         }
     }
 
-    public void test() throws Exception {
-        Connection c = null;
+    public String getValue(String table, String keyColumn, String valueColumn, String key) throws UndefinedDBFile, SQLException {
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
-            Statement st = c.createStatement();
-            ResultSet rs = st.executeQuery("select * from test_table;");
-            System.err.println("");
-            int x = rs.getMetaData().getColumnCount();
-            //Resultset.getMetaData() получаем информацию
-            //результирующей таблице
-            while (rs.next()) {
-                for (int i = 1; i <= x; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            throw e;
+
+            PreparedStatement ps = connection.prepareStatement("select " + valueColumn + " from " + table + " where " + keyColumn + "= ?");
+            ps.setString(1, key);
+            
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rs.getString(1);
+
+        } catch (NullPointerException ex) {
+            throw new UndefinedDBFile(ex);
         }
-        System.out.println("Opened database successfully");
     }
 
     public class UndefinedDBFile extends Exception {

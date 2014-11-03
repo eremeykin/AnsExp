@@ -121,29 +121,20 @@ public class Node implements DataSource {
         return result;
     }
 
-    public String getValueByPath(String... path) {
-        Node root = this;
-        boolean found = true;
-        for (String currNodeName : path) {
-            for (Node currNode : root.children) {
-                if (currNode.name.equals(currNodeName)) {
-                    root = currNode;
-                    found = true;
-                    break;
-                }
-                found = false;
-            }
-        }
-        if (found) {
-            return root.value;
-        } else {
-            return null;
-        }
+    @Override
+    public String getValueById(String id) {
+        Map<String, String> idMap = this.spreadToMap();
+        return idMap.get(id);
     }
 
     @Override
-    public String getValueById(String id) {
-        Map<String, String> idMap =  this.spreadToMap() ;
-        return idMap.get(id);
+    public void setValueById(String id, String value) {
+        List<Node> nodes = new ArrayList<>();
+        getNodes(nodes, this);
+        for (Node node : nodes) {
+            if (node != null && node.id != null && node.id.equals(id)) {
+                node.value = value;
+            }
+        }
     }
 }

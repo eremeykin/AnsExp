@@ -12,4 +12,5 @@ package ansexp.calculator;
 //ToDo написать метод String getValueByUniqueDescriptor(String descriptor)
 public interface DataSource {
     String getValueById(String id);
+    void setValueById(String id,String value);
 }

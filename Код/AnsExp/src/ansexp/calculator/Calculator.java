@@ -5,10 +5,13 @@
  */
 package ansexp.calculator;
 
+import java.io.File;
+
 /**
  *
  * @author eremeykin
  */
 public interface Calculator {
     public DataSource calculate(DataSource root);
+    public File printToFile();
 }

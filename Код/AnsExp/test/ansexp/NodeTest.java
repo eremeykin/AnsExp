@@ -39,196 +39,54 @@ public class NodeTest {
     public void tearDown() {
     }
 
-//    /**
-//     * Test of getChildren method, of class Node.
-//     */
-//    @Test
-//    public void testGetChildren() {
-//        System.out.println("getChildren");
-//        Node instance = null;
-//        List<Node> expResult = null;
-//        List<Node> result = instance.getChildren();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getDescription method, of class Node.
-//     */
-//    @Test
-//    public void testGetDescription() {
-//        System.out.println("getDescription");
-//        Node instance = null;
-//        String expResult = "";
-//        String result = instance.getDescription();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getValue method, of class Node.
-//     */
-//    @Test
-//    public void testGetValue() {
-//        System.out.println("getValue");
-//        Node instance = null;
-//        String expResult = "";
-//        String result = instance.getValue();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of setValue method, of class Node.
-//     */
-//    @Test
-//    public void testSetValue() {
-//        System.out.println("setValue");
-//        String value = "";
-//        Node instance = null;
-//        instance.setValue(value);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of toString method, of class Node.
-//     */
-//    @Test
-//    public void testToString() {
-//        System.out.println("toString");
-//        Node instance = null;
-//        String expResult = "";
-//        String result = instance.toString();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of isLeaf method, of class Node.
-//     */
-//    @Test
-//    public void testIsLeaf() {
-//        System.out.println("isLeaf");
-//        Node instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.isLeaf();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of printChildren method, of class Node.
-//     */
-//    @Test
-//    public void testPrintChildren() {
-//        System.out.println("printChildren");
-//        Node node = null;
-//        int count = 0;
-//        String expResult = "";
-//        String result = Node.printChildren(node, count);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getEditors method, of class Node.
-//     */
-//    @Test
-//    public void testGetEditors() {
-//        System.out.println("getEditors");
-//        List<DefaultCellEditor> res = null;
-//        Node node = null;
-//        Node.getEditors(res, node);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
     /**
-     * Test of spreadToMap method, of class Node.
-     */
-//    @Test
-//    public void testSpreadToMap() throws XMLParser.XMLParsingException, SQLException, SQLiteJDBC.UndefinedDBFile, ClassNotFoundException {
-//        System.out.println("spreadToMap");
-//        SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
-//        XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel.xml"));
-//        Node instance = parser.getResultNode();
-//        Map<String, String> expResult = new HashMap<>();
-//        expResult.put("Модель", "");
-//        expResult.put("Деталь", "");
-//        expResult.put("Внешний радиус", "");
-//        expResult.put("Внутренний радиус", "");
-//        expResult.put("Длина", "");
-//        expResult.put("Материал", "");
-//        expResult.put("Название", "");
-//        expResult.put("Модуль упругости", "");
-//        expResult.put("Коэффициент Пуассона", "");
-//        expResult.put("Кулачки", "");
-//        expResult.put("Количество", "");
-//        expResult.put("Величина смещения", "");
-//        expResult.put("Размеры", "");
-//        expResult.put("Длина", "");
-//        expResult.put("Высота", "");
-//        expResult.put("Ширина", "");
-//        expResult.put("Материал", "");
-//        expResult.put("Модуль упругости", "");
-//        expResult.put("Коэффициент Пуассона", "");
-//        expResult.put("Силы резания", "");
-//        expResult.put("Проекции", "");
-//        expResult.put("Касательная, Ftan", "");
-//        expResult.put("Радиальная, Frad", "");
-//        expResult.put("Осевая, Fax", "");
-//        expResult.put("Угловое положение", "");
-//        Map<String, String> result = instance.spreadToMap();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        //fail("The test case is a prototype.");
-//    }
-
-    /**
-     * Test of getValueByPath method, of class Node.
+     * Test of getValueById method, of class Node.
      */
     @Test
-    public void testgetValueByPath() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
-        System.out.println("getValueByPath (5 subtests)");
+    public void testGetValueById() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
+        System.out.println("getValueById");
+
         SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
         XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel2.xml"));
         Node instance = parser.getResultNode();
+        String id = "INNER_RADIUS";
+        String expResult = "3";
+        String result = instance.getValueById(id);
+        assertEquals(expResult, result);
 
-        String[] path = {"Модель", "Деталь", "Материал", "Название"};
-        String expResult = "7";
-        String value = instance.getValueByPath(path);
-        assertEquals("1 subtest faild", expResult, value);
-        System.out.println("    1 subtest passed");
+        id = "PART_POISSON";
+        expResult = "9";
+        result = instance.getValueById(id);
+        assertEquals(expResult, result);
 
-        path = new String[]{"Модель", "Силы резания", "Угловое положение"};
-        expResult = "25";
-        value = instance.getValueByPath(path);
-        assertEquals("2 subtest faild", expResult, value);
-        System.out.println("    2 subtest passed");
+        id = "JAW_DELTA";
+        expResult = "12";
+        result = instance.getValueById(id);
+        assertEquals(expResult, result);
+    }
 
-        path = new String[]{"Модель", "Силы резания", "Положение"};//There is no such node in the model!
-        expResult = null;
-        value = instance.getValueByPath(path);
-        assertEquals("3 subtest faild", expResult, value);
-        System.out.println("    3 subtest passed");
+    /**
+     * Test of setValueById method, of class Node.
+     */
+    @Test
+    public void testsetValueById() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
+        System.out.println("getValueById");
 
-        path = new String[]{"Модель", "Силы", "Угловое положение"};//There is no such node in the model!
-        expResult = null;
-        value = instance.getValueByPath(path);
-        assertEquals("4 subtest faild", expResult, value);
-        System.out.println("    4 subtest passed");
+        SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
+        XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel2.xml"));
+        Node instance = parser.getResultNode();
+        String id = "INNER_RADIUS";
+        instance.setValueById(id, "test");
+        String expResult = "test";
+        String result = instance.getValueById(id);
+        assertEquals(expResult, result);
 
-        path = new String[]{"", "Силы резания", "Угловое положение"};//There is no such node in the model!
-        expResult = null;
-        value = instance.getValueByPath(path);
-        assertEquals("5 subtest faild", expResult, value);
-        System.out.println("    5 subtest passed");
+        id = "PART_POISSON";
+        instance.setValueById(id, "12354");
+        expResult = "12354";
+        result = instance.getValueById(id);
+        assertEquals(expResult, result);
+
     }
 
 }
