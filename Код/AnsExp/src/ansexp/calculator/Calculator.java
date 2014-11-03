@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package calculator;
-
-import java.util.Map;
+package ansexp.calculator;
 
 /**
  *
  * @author eremeykin
  */
 public interface Calculator {
-    public Map<String,String> calculate(Map<String,String> root);
+    public DataSource calculate(DataSource root);
 }

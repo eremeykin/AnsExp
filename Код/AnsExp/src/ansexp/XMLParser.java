@@ -25,7 +25,7 @@ public class XMLParser {
     private Document document;
 
     private XMLParser() {
-        result = new Node("Root", "", "", null);
+        result = new Node("Root", "", "", null, null);
     }
 
     public static XMLParser getInstance(File file) throws XMLParsingException {
@@ -46,7 +46,7 @@ public class XMLParser {
                         // Если указан редактор comboBox
                         if (editorType != null && editorType.equals("comboBox")) {
                             //ToDo Получить из список из БД
-                            
+
                             String[] items = SQLiteJDBC.getInstance().getItemsList("part_material", "name");
                             return new DefaultCellEditor(new JComboBox(items));
                         }
@@ -74,7 +74,7 @@ public class XMLParser {
 
                     DefaultCellEditor editor = new Helper().makeEditorForXMLNode(currXMLNode);
 
-                    Node currNode = new Node(name, description, value, editor);
+                    Node currNode = new Node(name, description, value, null, editor);
                     //Добавляем текущий TreeTable узел в соответствующий пердыдущий узел TreeTable
                     node.getChildren().add(currNode);
                     //Вызываем для метод для текущих узлов
@@ -118,14 +118,14 @@ public class XMLParser {
     }
 
     public Node getResultNode() throws SQLException, SQLiteJDBC.UndefinedDBFile {
-        result = new Node("Root", "", "", null);
+        result = new Node("Root", "", "",null, null);
         parseToResult(document, result);
         return result;
     }
 
-    class XMLParsingException extends Exception {
+    public class XMLParsingException extends Exception {
 
-        XMLParsingException(Throwable e) {
+        public XMLParsingException(Throwable e) {
             super(e);
         }
     }

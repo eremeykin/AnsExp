@@ -68,7 +68,7 @@ public class SQLiteJDBC {
         System.out.println("Opened database successfully");
     }
 
-    class UndefinedDBFile extends Exception {
+    public class UndefinedDBFile extends Exception {
 
         public UndefinedDBFile(Throwable e) {
             super(e);

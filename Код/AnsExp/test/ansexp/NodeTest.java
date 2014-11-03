@@ -7,8 +7,6 @@ package ansexp;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -154,42 +152,83 @@ public class NodeTest {
     /**
      * Test of spreadToMap method, of class Node.
      */
+//    @Test
+//    public void testSpreadToMap() throws XMLParser.XMLParsingException, SQLException, SQLiteJDBC.UndefinedDBFile, ClassNotFoundException {
+//        System.out.println("spreadToMap");
+//        SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
+//        XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel.xml"));
+//        Node instance = parser.getResultNode();
+//        Map<String, String> expResult = new HashMap<>();
+//        expResult.put("Модель", "");
+//        expResult.put("Деталь", "");
+//        expResult.put("Внешний радиус", "");
+//        expResult.put("Внутренний радиус", "");
+//        expResult.put("Длина", "");
+//        expResult.put("Материал", "");
+//        expResult.put("Название", "");
+//        expResult.put("Модуль упругости", "");
+//        expResult.put("Коэффициент Пуассона", "");
+//        expResult.put("Кулачки", "");
+//        expResult.put("Количество", "");
+//        expResult.put("Величина смещения", "");
+//        expResult.put("Размеры", "");
+//        expResult.put("Длина", "");
+//        expResult.put("Высота", "");
+//        expResult.put("Ширина", "");
+//        expResult.put("Материал", "");
+//        expResult.put("Модуль упругости", "");
+//        expResult.put("Коэффициент Пуассона", "");
+//        expResult.put("Силы резания", "");
+//        expResult.put("Проекции", "");
+//        expResult.put("Касательная, Ftan", "");
+//        expResult.put("Радиальная, Frad", "");
+//        expResult.put("Осевая, Fax", "");
+//        expResult.put("Угловое положение", "");
+//        Map<String, String> result = instance.spreadToMap();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        //fail("The test case is a prototype.");
+//    }
+
+    /**
+     * Test of getValueByPath method, of class Node.
+     */
     @Test
-    public void testSpreadToMap() throws XMLParser.XMLParsingException, SQLException, SQLiteJDBC.UndefinedDBFile, ClassNotFoundException {
-        System.out.println("spreadToMap");
+    public void testgetValueByPath() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
+        System.out.println("getValueByPath (5 subtests)");
         SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
-        XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel.xml"));
+        XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel2.xml"));
         Node instance = parser.getResultNode();
-        Map<String, String> expResult = new HashMap<>();
-        expResult.put("Модель", "");
-        expResult.put("Деталь", "");
-        expResult.put("Внешний радиус", "");
-        expResult.put("Внутренний радиус", "");
-        expResult.put("Длина", "");
-        expResult.put("Материал", "");
-        expResult.put("Название", "");
-        expResult.put("Модуль упругости", "");
-        expResult.put("Коэффициент Пуассона", "");
-        expResult.put("Кулачки", "");
-        expResult.put("Количество", "");
-        expResult.put("Величина смещения", "");
-        expResult.put("Размеры", "");
-        expResult.put("Длина", "");
-        expResult.put("Высота", "");
-        expResult.put("Ширина", "");
-        expResult.put("Материал", "");
-        expResult.put("Модуль упругости", "");
-        expResult.put("Коэффициент Пуассона", "");
-        expResult.put("Силы резания", "");
-        expResult.put("Проекции", "");
-        expResult.put("Касательная, Ftan", "");
-        expResult.put("Радиальная, Frad", "");
-        expResult.put("Осевая, Fax", "");
-        expResult.put("Угловое положение", "");
-        Map<String, String> result = instance.spreadToMap();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+
+        String[] path = {"Модель", "Деталь", "Материал", "Название"};
+        String expResult = "7";
+        String value = instance.getValueByPath(path);
+        assertEquals("1 subtest faild", expResult, value);
+        System.out.println("    1 subtest passed");
+
+        path = new String[]{"Модель", "Силы резания", "Угловое положение"};
+        expResult = "25";
+        value = instance.getValueByPath(path);
+        assertEquals("2 subtest faild", expResult, value);
+        System.out.println("    2 subtest passed");
+
+        path = new String[]{"Модель", "Силы резания", "Положение"};//There is no such node in the model!
+        expResult = null;
+        value = instance.getValueByPath(path);
+        assertEquals("3 subtest faild", expResult, value);
+        System.out.println("    3 subtest passed");
+
+        path = new String[]{"Модель", "Силы", "Угловое положение"};//There is no such node in the model!
+        expResult = null;
+        value = instance.getValueByPath(path);
+        assertEquals("4 subtest faild", expResult, value);
+        System.out.println("    4 subtest passed");
+
+        path = new String[]{"", "Силы резания", "Угловое положение"};//There is no such node in the model!
+        expResult = null;
+        value = instance.getValueByPath(path);
+        assertEquals("5 subtest faild", expResult, value);
+        System.out.println("    5 subtest passed");
     }
 
 }
