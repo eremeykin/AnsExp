@@ -6,6 +6,7 @@
 package ansexp.forms;
 
 import ansexp.*;
+import ansexp.calculator.DefaultCalculator;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -164,14 +165,18 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-//        Node root = (Node) outline1.getOutlineModel().getRoot();
+        Node root = (Node) outline1.getOutlineModel().getRoot();
+        File dataBase = new File("/home/eremeykin/Курсовой /Код/AnsExp/src/database/mainDB.sqlite");
+        File output = new File("/home/eremeykin/Курсовой /Код/AnsExp/src/model.mac");
+        DefaultCalculator dc = new DefaultCalculator(root,dataBase,output);
+        dc.calculate(root);
+        dc.printToFile();
 //        System.out.println(Node.printChildren(root, 0));
 //        try {
 //            SQLiteJDBC.getInstance().test();
 //        } catch (Exception ex) {
 //            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**

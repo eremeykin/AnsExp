@@ -48,12 +48,13 @@ public class DefaultCalculatorTest {
     @Test
     public void testPrintAllVars() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
         System.out.println("printAllVars");
-        SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
+        File dataBase = new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite");
+        SQLiteJDBC.getInstance().setSourceFile(dataBase);
         XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/XML/model2.xml"));
         //XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel2.xml"));
 
         Node root = parser.getResultNode();
-        DefaultCalculator instance = new DefaultCalculator(root);
+        DefaultCalculator instance = new DefaultCalculator(root,dataBase,null);
         Node.printChildren(root, 0);
         String result = instance.printAllVars();
         String expResult = "INNER_RADIUS=\n"
@@ -77,7 +78,7 @@ public class DefaultCalculatorTest {
         parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel2.xml"));
         root = parser.getResultNode();
         //System.out.println(Node.printChildren(root, 0));
-        instance = new DefaultCalculator(root);
+        instance = new DefaultCalculator(root,dataBase,null);
         expResult = "INNER_RADIUS=3\n"
                 + "OUTER_RADIUS=4\n"
                 + "LENGTH=5\n"
