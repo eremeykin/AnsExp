@@ -11,7 +11,7 @@ import java.io.File;
  *
  * @author eremeykin
  */
-public interface Calculator {
+public interface Calculateable {
     public DataSource calculate(DataSource root);
     public File printToFile();
 }

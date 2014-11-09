@@ -12,7 +12,7 @@ import java.util.EnumMap;
  *
  * @author eremeykin
  */
-public class DefaultCalculator implements Calculator{
+public class DefaultCalculator implements Calculateable{
 
     DataSource source;
 
@@ -56,7 +56,8 @@ public class DefaultCalculator implements Calculator{
         }
         return result;
     }
-    
+
+   
     @Override
     public DataSource calculate(DataSource root) {
         return null;
