@@ -7,6 +7,7 @@ package ansexp.forms;
 
 import ansexp.*;
 import ansexp.calculator.DefaultCalculator;
+import java.awt.Label;
 import java.io.File;
 import java.sql.SQLException;
 import javax.swing.JFileChooser;
@@ -28,14 +29,14 @@ public class MainForm extends javax.swing.JFrame {
         ButtonTabComponent btc = new ButtonTabComponent(new JTabbedPane());
         this.add(btc);
         try {
-            SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/database/mainDB.sqlite"));
+            SQLiteJDBC.getInstance().setSourceFile(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\database\\mainDB.sqlite"));
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, "Произошла ошибка БД."
                     + "Файл не может быть открыт");
             JOptionPane.showMessageDialog(this, ex);
         }
         try {
-            XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/XML/model2.xml"));
+            XMLParser parser = XMLParser.getInstance(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\XML\\model2.xml"));
             outline1 = new OutlineCreator(parser.getResultNode()).getOutline();
             jScrollPane1.setViewportView(outline1);
             jTabbedPane1.setTitleAt(0, "model1");
@@ -79,8 +80,9 @@ public class MainForm extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -93,6 +95,7 @@ public class MainForm extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Выбрать файл");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,18 +104,26 @@ public class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-
-        jMenuItem2.setText("Test");
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Новая вкладка");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        jMenu1.add(jMenuItem2);
 
+        jMenuItem3.setText("Выход");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -133,8 +144,7 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        String debug = Node.printChildren((Node) outline1.getOutlineModel().getRoot(), 0);
-        System.out.println(debug);
+
         JFileChooser fileChooser = new JFileChooser();
         int res = fileChooser.showDialog(jMenu1, "Открыть модель");
         if (res == JFileChooser.APPROVE_OPTION) {
@@ -169,32 +179,29 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        Node root = (Node) outline1.getOutlineModel().getRoot();
-        File dataBase = new File("/home/eremeykin/Курсовой /Код/AnsExp/src/database/mainDB.sqlite");
-        File output = new File("/home/eremeykin/Курсовой /Код/AnsExp/src/model.mac");
-        DefaultCalculator dc = new DefaultCalculator(root,dataBase,output);
-        dc.calculate(root);
-        dc.printToFile();
-//        System.out.println(Node.printChildren(root, 0));
-//        try {
-//            SQLiteJDBC.getInstance().test();
-//        } catch (Exception ex) {
-//            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        jTabbedPane1.add(new Label("label1"));
+        jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount()-1, new ButtonTabComponent(jTabbedPane1));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        Runtime.getRuntime().exit(0);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("GTK+".equals(info.getName())) {
+                System.out.println(info.getName());
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -225,6 +232,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.netbeans.swing.outline.Outline outline1;

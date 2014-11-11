@@ -5,7 +5,12 @@
  */
 package ansexp;
 
+import java.awt.Component;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeModel;
 import org.netbeans.swing.outline.DefaultOutlineModel;
 import org.netbeans.swing.outline.Outline;
@@ -33,8 +38,28 @@ public class OutlineCreator {
                 if (modelColumn != 2) {
                     return null;
                 }
-                    Node selected = (Node) (this.getModel().getValueAt(modelRow, 0));
-                    return selected.getEditor();
+                Node selected = (Node) (this.getModel().getValueAt(modelRow, 0));
+                return selected.getEditor();
+            }
+
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                TableCellRenderer renderer = super.getCellRenderer(row, column);
+                int modelRow = convertRowIndexToModel(row);
+                int modelColumn = convertColumnIndexToModel(column);
+                Node selected = (Node) (this.getModel().getValueAt(modelRow, 0));
+                if (modelColumn==2 && selected.getEditor()!=null && selected.getEditor().getComponent() instanceof JComboBox ) {
+                    renderer = new DefaultTableCellRenderer(){
+                        @Override
+                            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                                Component c = new JComboBox(new String[] {selected.getValue()});
+                                return c;
+                            }
+
+                    };
+                    return renderer;
+                }
+                return renderer;
             }
         };
         outline.setRootVisible(false);

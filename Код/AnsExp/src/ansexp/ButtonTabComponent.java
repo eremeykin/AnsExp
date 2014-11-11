@@ -80,7 +80,7 @@ public class ButtonTabComponent extends JPanel {
         public TabButton() {
             int size = 18;
             setPreferredSize(new Dimension(size, size));
-            setToolTipText("close this tab");
+            setToolTipText("Закрыть вкладку");
             //Make the button looks the same for all Laf's
             setUI(new BasicButtonUI());
             //Make it transparent
@@ -101,7 +101,8 @@ public class ButtonTabComponent extends JPanel {
         public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
             if (i != -1) {
-                pane.remove(i);
+                //pane.remove(i);
+                pane.removeTabAt(i);
             }
         }
 
