@@ -89,13 +89,20 @@ public class Node implements DataSource {
      *
      * @param res result ArrayList with all the editors
      * @param node the root Node
+     * @deprecated use {@link #getEditor(Node node)} instead. 
      */
+    @Deprecated
     public static void getEditors(List<DefaultCellEditor> res, Node node) {
         for (Node n : node.children) {
             res.add(n.editor);
             getEditors(res, n);
         }
     }
+    
+    public DefaultCellEditor getEditor() {
+        return this.editor;
+        }
+    
 
     /**
      * Copies all the nodes into the specified ArrayList
