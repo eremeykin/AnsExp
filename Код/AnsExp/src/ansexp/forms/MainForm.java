@@ -9,10 +9,9 @@ import ansexp.*;
 import ansexp.calculator.DefaultCalculator;
 import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -25,6 +24,9 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
+        jTabbedPane1.setTabComponentAt(0, new ButtonTabComponent(jTabbedPane1));
+        ButtonTabComponent btc = new ButtonTabComponent(new JTabbedPane());
+        this.add(btc);
         try {
             SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/database/mainDB.sqlite"));
         } catch (ClassNotFoundException | SQLException ex) {
@@ -36,8 +38,7 @@ public class MainForm extends javax.swing.JFrame {
             XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/XML/model2.xml"));
             outline1 = new OutlineCreator(parser.getResultNode()).getOutline();
             jScrollPane1.setViewportView(outline1);
-            ArrayList<DefaultCellEditor> AL = new ArrayList<>();
-            Node.getEditors(AL, parser.getResultNode());
+            jTabbedPane1.setTitleAt(0, "model1");
         } catch (XMLParser.XMLParsingException exc) {
             JOptionPane.showMessageDialog(this, "Произошла ошибка при чтении XML файла."
                     + "Файл не может быть открыт");
@@ -72,6 +73,7 @@ public class MainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         outline1 = new org.netbeans.swing.outline.Outline();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -86,6 +88,8 @@ public class MainForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jScrollPane1.setViewportView(outline1);
+
+        jTabbedPane1.addTab("tab1", jScrollPane1);
 
         jMenu1.setText("File");
 
@@ -117,11 +121,11 @@ public class MainForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
         );
 
         pack();
@@ -222,6 +226,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private org.netbeans.swing.outline.Outline outline1;
     // End of variables declaration//GEN-END:variables
 }
