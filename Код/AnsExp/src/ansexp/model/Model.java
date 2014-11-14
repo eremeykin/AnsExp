@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayDeque;
 import java.util.Enumeration;
 import java.util.zip.*;
 import org.netbeans.swing.outline.Outline;
@@ -28,6 +29,8 @@ public class Model {
     private final ZipFile zipFile;
     private final Outline outline;
 
+    private static ArrayDeque<Model> models=new ArrayDeque<>();
+
     public Model(ZipFile zipFile) throws IOException, SQLException, XMLParser.XMLParsingException, ClassNotFoundException {
         this.zipFile = zipFile;
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
@@ -39,8 +42,9 @@ public class Model {
             }
         }
         XMLParser parser = new XMLParser(xmlFile, dbFile);
-        root=parser.getResultNode();
+        root = parser.getResultNode();
         outline = new OutlineCreator(root).getOutline();
+        models.add(this);
     }
 
     private boolean isComplete() {
@@ -51,7 +55,7 @@ public class Model {
         String extension = getExt(entry.getName());
 
         File tempFile = File.createTempFile(Integer.toString(entry.hashCode()), "." + extension);
-        tempFile.deleteOnExit();
+        //tempFile.deleteOnExit();
 
         switch (extension) {
             case "xml":
@@ -72,6 +76,8 @@ public class Model {
         byte b[] = new byte[stream.available()];
         stream.read(b);
         tmpOut.write(b);
+        stream.close();
+        tmpOut.close();
 
     }
 
@@ -107,5 +113,16 @@ public class Model {
     public Outline getOutline() {
         return outline;
     }
-   
+
+    public static void terminate() {
+        for (Model m : models) {
+            if (m.classFile!=null)
+                m.classFile.delete();
+            if (m.dbFile!=null)
+                m.dbFile.delete();
+            if (m.xmlFile!=null)
+                m.xmlFile.delete();
+        }
+    }
+
 }
