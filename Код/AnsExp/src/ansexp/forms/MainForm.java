@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+ import java.util.zip.*;
 
 /**
  *
@@ -25,42 +26,42 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-        jTabbedPane1.setTabComponentAt(0, new ButtonTabComponent(jTabbedPane1));
-        ButtonTabComponent btc = new ButtonTabComponent(new JTabbedPane());
-        this.add(btc);
-        try {
-            SQLiteJDBC.getInstance().setSourceFile(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\database\\mainDB.sqlite"));
-        } catch (ClassNotFoundException | SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Произошла ошибка БД."
-                    + "Файл не может быть открыт");
-            JOptionPane.showMessageDialog(this, ex);
-        }
-        try {
-            XMLParser parser = XMLParser.getInstance(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\XML\\model2.xml"));
-            outline1 = new OutlineCreator(parser.getResultNode()).getOutline();
-            jScrollPane1.setViewportView(outline1);
-            jTabbedPane1.setTitleAt(0, "model1");
-        } catch (XMLParser.XMLParsingException exc) {
-            JOptionPane.showMessageDialog(this, "Произошла ошибка при чтении XML файла."
-                    + "Файл не может быть открыт");
-            JOptionPane.showMessageDialog(this, exc);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Произошла ошибка работе с БД.");
-            JOptionPane.showMessageDialog(this, ex);
-        } catch (SQLiteJDBC.UndefinedDBFile ex) {
-            JOptionPane.showMessageDialog(this, "База данных не определена.\n Выбирете БД вручную");
-            JFileChooser fileChooser = new JFileChooser();
-            int res = fileChooser.showDialog(jMenu1, "Открыть модель");
-            if (res == JFileChooser.APPROVE_OPTION) {
-                try {
-                    SQLiteJDBC.getInstance().setSourceFile(fileChooser.getSelectedFile());
-                } catch (ClassNotFoundException | SQLException e) {
-                    JOptionPane.showMessageDialog(this, "Не удается открыть БД. Программа будет закрыта");
-                    System.exit(-1);
-
-                }
-            }
-        }
+//        jTabbedPane1.setTabComponentAt(0, new ButtonTabComponent(jTabbedPane1));
+//        ButtonTabComponent btc = new ButtonTabComponent(new JTabbedPane());
+//        this.add(btc);
+//        try {
+//            SQLiteJDBC.getInstance().setSourceFile(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\database\\mainDB.sqlite"));
+//        } catch (ClassNotFoundException | SQLException ex) {
+//            JOptionPane.showMessageDialog(this, "Произошла ошибка БД."
+//                    + "Файл не может быть открыт");
+//            JOptionPane.showMessageDialog(this, ex);
+//        }
+//        try {
+//            XMLParser parser = XMLParser.getInstance(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\XML\\model2.xml"));
+//            outline1 = new OutlineCreator(parser.getResultNode()).getOutline();
+//            jScrollPane1.setViewportView(outline1);
+//            jTabbedPane1.setTitleAt(0, "model1");
+//        } catch (XMLParser.XMLParsingException exc) {
+//            JOptionPane.showMessageDialog(this, "Произошла ошибка при чтении XML файла."
+//                    + "Файл не может быть открыт");
+//            JOptionPane.showMessageDialog(this, exc);
+//        } catch (SQLException ex) {
+//            JOptionPane.showMessageDialog(this, "Произошла ошибка работе с БД.");
+//            JOptionPane.showMessageDialog(this, ex);
+//        } catch (SQLiteJDBC.UndefinedDBFile ex) {
+//            JOptionPane.showMessageDialog(this, "База данных не определена.\n Выбирете БД вручную");
+//            JFileChooser fileChooser = new JFileChooser();
+//            int res = fileChooser.showDialog(jMenu1, "Открыть модель");
+//            if (res == JFileChooser.APPROVE_OPTION) {
+//                try {
+//                    SQLiteJDBC.getInstance().setSourceFile(fileChooser.getSelectedFile());
+//                } catch (ClassNotFoundException | SQLException e) {
+//                    JOptionPane.showMessageDialog(this, "Не удается открыть БД. Программа будет закрыта");
+//                    System.exit(-1);
+//
+//                }
+//            }
+//        }
 
     }
 

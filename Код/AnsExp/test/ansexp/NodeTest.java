@@ -80,7 +80,6 @@ public class NodeTest {
         String expResult = "test";
         String result = instance.getValueById(id);
         assertEquals(expResult, result);
-
         id = "PART_POISSON";
         instance.setValueById(id, "12354");
         expResult = "12354";

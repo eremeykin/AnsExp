@@ -8,8 +8,6 @@ package ansexp.forms;
 import ansexp.ButtonTabComponent;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
-import org.netbeans.swing.tabcontrol.TabbedContainer;
-import org.netbeans.swing.tabcontrol.plaf.TabControlButton;
 
 /**
  *
