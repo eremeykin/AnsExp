@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ansexp;
+package ansexp.model;
 
 import javax.swing.tree.TreeModel;
 import org.netbeans.swing.outline.RowModel;

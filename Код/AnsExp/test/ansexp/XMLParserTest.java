@@ -5,6 +5,9 @@
  */
 package ansexp;
 
+import ansexp.model.Node;
+import ansexp.model.XMLParser;
+import ansexp.model.SQLiteJDBC;
 import java.io.File;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -56,8 +59,8 @@ public class XMLParserTest {
     @Test
     public void testGetResultNode() throws Exception {
         System.out.println("getResultNode");
-        SQLiteJDBC.getInstance().setSourceFile(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite"));
-        XMLParser instance = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel.xml"));
+        SQLiteJDBC db = new SQLiteJDBC(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite"));
+        XMLParser instance =new  XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel.xml"),db);
         Node result = instance.getResultNode();
     }
     

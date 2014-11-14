@@ -5,7 +5,7 @@
  */
 package ansexp.calculator;
 
-import ansexp.DataSource;
+import ansexp.model.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

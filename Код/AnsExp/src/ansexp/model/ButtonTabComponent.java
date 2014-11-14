@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package ansexp;
+package ansexp.model;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;

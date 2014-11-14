@@ -5,15 +5,26 @@
  */
 package ansexp.forms;
 
-import ansexp.*;
+import ansexp.model.ButtonTabComponent;
 import ansexp.calculator.DefaultCalculator;
+import ansexp.model.Model;
+import ansexp.model.Node;
+import ansexp.model.OutlineCreator;
+import java.awt.Component;
 import java.awt.Label;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.sql.SQLException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
- import java.util.zip.*;
+import java.util.zip.*;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import org.netbeans.swing.outline.Outline;
 
 /**
  *
@@ -21,47 +32,29 @@ import javax.swing.JTabbedPane;
  */
 public class MainForm extends javax.swing.JFrame {
 
+    private Outline outline;
+
     /**
      * Creates new form MainForm
      */
     public MainForm() {
         initComponents();
-//        jTabbedPane1.setTabComponentAt(0, new ButtonTabComponent(jTabbedPane1));
-//        ButtonTabComponent btc = new ButtonTabComponent(new JTabbedPane());
-//        this.add(btc);
-//        try {
-//            SQLiteJDBC.getInstance().setSourceFile(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\database\\mainDB.sqlite"));
-//        } catch (ClassNotFoundException | SQLException ex) {
-//            JOptionPane.showMessageDialog(this, "Произошла ошибка БД."
-//                    + "Файл не может быть открыт");
-//            JOptionPane.showMessageDialog(this, ex);
-//        }
-//        try {
-//            XMLParser parser = XMLParser.getInstance(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\Код\\Код\\AnsExp\\src\\XML\\model2.xml"));
-//            outline1 = new OutlineCreator(parser.getResultNode()).getOutline();
-//            jScrollPane1.setViewportView(outline1);
-//            jTabbedPane1.setTitleAt(0, "model1");
-//        } catch (XMLParser.XMLParsingException exc) {
-//            JOptionPane.showMessageDialog(this, "Произошла ошибка при чтении XML файла."
-//                    + "Файл не может быть открыт");
-//            JOptionPane.showMessageDialog(this, exc);
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(this, "Произошла ошибка работе с БД.");
-//            JOptionPane.showMessageDialog(this, ex);
-//        } catch (SQLiteJDBC.UndefinedDBFile ex) {
-//            JOptionPane.showMessageDialog(this, "База данных не определена.\n Выбирете БД вручную");
-//            JFileChooser fileChooser = new JFileChooser();
-//            int res = fileChooser.showDialog(jMenu1, "Открыть модель");
-//            if (res == JFileChooser.APPROVE_OPTION) {
-//                try {
-//                    SQLiteJDBC.getInstance().setSourceFile(fileChooser.getSelectedFile());
-//                } catch (ClassNotFoundException | SQLException e) {
-//                    JOptionPane.showMessageDialog(this, "Не удается открыть БД. Программа будет закрыта");
-//                    System.exit(-1);
-//
-//                }
-//            }
-//        }
+        try {
+            Model m = new Model(new ZipFile("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\models\\model1.zip"));
+            JScrollPane jsp = new JScrollPane();
+            m.getOutline().add(jPopupMenu1);
+
+            jsp.setViewportView(m.getOutline());
+            jTabbedPane1.add(jsp);
+            jTabbedPane1.setTabComponentAt(0, new ButtonTabComponent(jTabbedPane1));
+            jTabbedPane1.setTitleAt(0, "model1.zip");
+            m.getOutline().addMouseListener(new PopClickListener());
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Произошла ошибка.");
+            JOptionPane.showMessageDialog(this, e);
+
+        }
 
     }
 
@@ -74,10 +67,9 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        outline1 = new org.netbeans.swing.outline.Outline();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -85,19 +77,20 @@ public class MainForm extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+        jMenuItem4.setText("jMenuItem4");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem4);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jScrollPane1.setViewportView(outline1);
-
-        jTabbedPane1.addTab("tab1", jScrollPane1);
 
         jMenu1.setText("File");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Выбрать файл");
+        jMenuItem1.setText("Открыть в новой вкладке...");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -150,29 +143,17 @@ public class MainForm extends javax.swing.JFrame {
         int res = fileChooser.showDialog(jMenu1, "Открыть модель");
         if (res == JFileChooser.APPROVE_OPTION) {
             try {
-                XMLParser parser = XMLParser.getInstance(fileChooser.getSelectedFile());
-                outline1 = new OutlineCreator(parser.getResultNode()).getOutline();
-                jScrollPane1.setViewportView(outline1);
-            } catch (XMLParser.XMLParsingException exc) {
-                JOptionPane.showMessageDialog(this, "Произошла ошибка при чтении XML файла."
-                        + "Файл не может быть открыт");
+                Model m = new Model(new ZipFile(fileChooser.getSelectedFile()));
+                JScrollPane jsp = new JScrollPane();
+                m.getOutline().add(jPopupMenu1);
+                jsp.setViewportView(m.getOutline());
+                jTabbedPane1.add(jsp);
+                jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1));
+                jTabbedPane1.setTitleAt(jTabbedPane1.getTabCount() - 1, fileChooser.getSelectedFile().getName());
+                m.getOutline().addMouseListener(new PopClickListener());
+            } catch (Exception exc) {
+                JOptionPane.showMessageDialog(this, "Произошла ошибка.");
                 JOptionPane.showMessageDialog(this, exc);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Произошла ошибка работе с БД.");
-                JOptionPane.showMessageDialog(this, ex);
-            } catch (SQLiteJDBC.UndefinedDBFile ex) {
-                JOptionPane.showMessageDialog(this, "База данных не определена.\n Выбирете БД вручную");
-                JFileChooser fileChooser2 = new JFileChooser();
-                int res2 = fileChooser2.showDialog(jMenu1, "Открыть модель");
-                if (res2 == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        SQLiteJDBC.getInstance().setSourceFile(fileChooser.getSelectedFile());
-                    } catch (ClassNotFoundException | SQLException e) {
-                        JOptionPane.showMessageDialog(this, "Не удается открыть БД. Программа будет закрыта");
-                        System.exit(-1);
-
-                    }
-                }
             }
         }
 
@@ -181,13 +162,17 @@ public class MainForm extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         jTabbedPane1.add(new Label("label1"));
-        jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount()-1, new ButtonTabComponent(jTabbedPane1));
+        jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         Runtime.getRuntime().exit(0);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -201,7 +186,6 @@ public class MainForm extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                System.out.println(info.getName());
                 if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -226,16 +210,58 @@ public class MainForm extends javax.swing.JFrame {
         });
     }
 
+    class PopClickListener extends MouseAdapter {
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                doPop(e);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                doPop(e);
+            }
+        }
+
+        private void doPop(MouseEvent e) {
+            Outline outline = (Outline) e.getComponent();
+            int selected = outline.getSelectedRow();
+            Node subRoot = (Node) outline.getValueAt(selected, 0);
+
+            JPopupMenu menu = new JPopupMenu();//jPopupMenu1;
+            menu.add(new JMenuItem("Просмотр в новой вкладке"));
+            if (outline.getSelectedRowCount() != 0 && !subRoot.isLeaf()) {
+                
+                menu.show(e.getComponent(), e.getX(), e.getY());
+                ((JMenuItem) menu.getComponent(0)).addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        Outline subOutline=new OutlineCreator(subRoot).getOutline();
+                        JScrollPane jsp = new JScrollPane();
+                        jsp.setViewportView(subOutline);
+                        jTabbedPane1.add(jsp);
+                        jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1));
+                        jTabbedPane1.setTitleAt(jTabbedPane1.getTabCount() - 1, subRoot.getName());
+                        subOutline.addMouseListener(new PopClickListener());
+                    }
+                });
+            }
+        }
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private org.netbeans.swing.outline.Outline outline1;
     // End of variables declaration//GEN-END:variables
 }

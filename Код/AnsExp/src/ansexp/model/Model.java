@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ansexp;
+package ansexp.model;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.zip.*;
 import org.netbeans.swing.outline.Outline;
@@ -23,10 +24,11 @@ public class Model {
     private File dbFile;
     private File xmlFile;
     private File classFile;
+    private final Node root;
     private final ZipFile zipFile;
-    private Outline outline;
+    private final Outline outline;
 
-    public Model(ZipFile zipFile) throws IOException {
+    public Model(ZipFile zipFile) throws IOException, SQLException, XMLParser.XMLParsingException, ClassNotFoundException {
         this.zipFile = zipFile;
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
@@ -36,6 +38,9 @@ public class Model {
                 break;
             }
         }
+        XMLParser parser = new XMLParser(xmlFile, dbFile);
+        root=parser.getResultNode();
+        outline = new OutlineCreator(root).getOutline();
     }
 
     private boolean isComplete() {
@@ -64,7 +69,7 @@ public class Model {
 
         InputStream stream = this.zipFile.getInputStream(entry);
         FileOutputStream tmpOut = new FileOutputStream(tempFile);
-        byte b[] = new byte[stream.available() + 50];
+        byte b[] = new byte[stream.available()];
         stream.read(b);
         tmpOut.write(b);
 
@@ -94,6 +99,13 @@ public class Model {
     private String getExt(String path) {
         String[] s = path.split("\\.");
         return s[s.length - 1];
+    }
+
+    /**
+     * @return the outline
+     */
+    public Outline getOutline() {
+        return outline;
     }
    
 }

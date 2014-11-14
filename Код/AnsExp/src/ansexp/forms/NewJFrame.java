@@ -5,7 +5,7 @@
  */
 package ansexp.forms;
 
-import ansexp.ButtonTabComponent;
+import ansexp.model.ButtonTabComponent;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 

@@ -1,4 +1,4 @@
-package ansexp;
+package ansexp.model;
 
 import java.io.File;
 import java.sql.*;
@@ -7,18 +7,9 @@ import java.util.List;
 
 public class SQLiteJDBC {
 
-    private static SQLiteJDBC instance = new SQLiteJDBC();
-    private Connection connection = null;
+    private final Connection connection;
 
-    private SQLiteJDBC() {
-
-    }
-
-    public static SQLiteJDBC getInstance() {
-        return instance;
-    }
-
-    public void setSourceFile(File file) throws ClassNotFoundException, SQLException {
+    public SQLiteJDBC(File file) throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
     }
@@ -67,7 +58,7 @@ public class SQLiteJDBC {
         }
     }
 
-    public class UndefinedDBFile extends Exception {
+    public class UndefinedDBFile extends SQLException {
 
         public UndefinedDBFile(Throwable e) {
             super(e);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ansexp;
+package ansexp.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +51,7 @@ public class Node implements DataSource {
 
     @Override
     public String toString() {
-        return name;
+        return getName();
     }
 
     public boolean isLeaf() {
@@ -76,7 +76,7 @@ public class Node implements DataSource {
                 return result;
             }
         }
-        String result = node.name + "(" + node.value + ")";
+        String result = node.getName() + "(" + node.value + ")";
         count++;
         for (Node n : node.getChildren()) {
             result += "\n " + new Helper().printSpace(count) + printChildren(n, count);
@@ -142,5 +142,12 @@ public class Node implements DataSource {
                 node.value = value;
             }
         }
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
 }

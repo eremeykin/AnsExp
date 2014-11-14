@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ansexp;
+package ansexp.model;
 
 import java.awt.Component;
 import javax.swing.JComboBox;
@@ -64,8 +64,8 @@ public class OutlineCreator {
         };
         outline.setRootVisible(false);
         outline.setModel(mdl);
-        RendererForChangeable rfc = new RendererForChangeable();
-        outline.setDefaultRenderer(String.class, rfc);
+        outline.setDefaultRenderer(String.class, new RendererForChangeable());
+        outline.getTableHeader().setVisible(true);
     }
 
     public Outline getOutline() {

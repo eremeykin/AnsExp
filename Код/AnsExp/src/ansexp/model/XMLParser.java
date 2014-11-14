@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ansexp;
+package ansexp.model;
 
+import ansexp.model.SQLiteJDBC;
 import java.io.File;
 import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
@@ -19,19 +20,23 @@ import org.w3c.dom.*;
  */
 public class XMLParser {
 
-    private static XMLParser parser = new XMLParser();
+    private final SQLiteJDBC dataBase;
     private File xmlFile;
     private Node result;
     private Document document;
 
-    private XMLParser() {
+    public XMLParser(File xmlFile, File dbFile) throws XMLParsingException, ClassNotFoundException, SQLException {
         result = new Node("Root", "", "", null, null);
+        dataBase = new SQLiteJDBC(dbFile);
+        this.xmlFile = xmlFile;
+        document = this.getDocument();
     }
 
-    public static XMLParser getInstance(File file) throws XMLParsingException {
-        parser.xmlFile = file;
-        parser.document = parser.getDocument();
-        return parser;
+    public XMLParser(File xmlFile, SQLiteJDBC dataBase) throws XMLParsingException, ClassNotFoundException, SQLException {
+        result = new Node("Root", "", "", null, null);
+        this.dataBase =dataBase;
+        this.xmlFile = xmlFile;
+        document = this.getDocument();
     }
 
     private void parseToResult(org.w3c.dom.Node xmlNode, Node node) throws SQLException, SQLiteJDBC.UndefinedDBFile {
@@ -47,7 +52,7 @@ public class XMLParser {
                         if (editorType != null && editorType.equals("comboBox")) {
                             //ToDo Получить из список из БД!!
 
-                            String[] items = SQLiteJDBC.getInstance().getItemsList("part_material", "name");
+                            String[] items = dataBase.getItemsList("part_material", "name");
                             return new DefaultCellEditor(new JComboBox(items));
                         }
                         // Если указан редактор textField

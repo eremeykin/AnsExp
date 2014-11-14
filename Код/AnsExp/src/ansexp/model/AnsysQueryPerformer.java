@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ansexp;
+package ansexp.model;
 
 import java.io.*;
 import javax.xml.parsers.ParserConfigurationException;

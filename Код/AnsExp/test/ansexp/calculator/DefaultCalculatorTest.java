@@ -5,9 +5,9 @@
  */
 package ansexp.calculator;
 
-import ansexp.Node;
-import ansexp.SQLiteJDBC;
-import ansexp.XMLParser;
+import ansexp.model.Node;
+import ansexp.model.SQLiteJDBC;
+import ansexp.model.XMLParser;
 import java.io.File;
 import java.sql.SQLException;
 import org.junit.After;
@@ -48,10 +48,10 @@ public class DefaultCalculatorTest {
     @Test
     public void testPrintAllVars() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
         System.out.println("printAllVars");
-        File dataBase = new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testDB.sqlite");
-        SQLiteJDBC.getInstance().setSourceFile(dataBase);
-        XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/src/XML/model2.xml"));
-        //XMLParser parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel2.xml"));
+        File dataBase = new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite");
+        SQLiteJDBC db = new SQLiteJDBC(dataBase);
+        XMLParser parser = new XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\models\\model2.xml"),db);
+        //XMLParser parser = XMLParser.getInstance(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel2.xml"));
 
         Node root = parser.getResultNode();
         DefaultCalculator instance = new DefaultCalculator(root,dataBase,null);
@@ -75,7 +75,7 @@ public class DefaultCalculatorTest {
                 + "FORCE_AX=\n"
                 + "FORCE_POS=\n";
         assertEquals(expResult, result);
-        parser = XMLParser.getInstance(new File("/home/eremeykin/Курсовой /Код/AnsExp/test/ansexp/testmodel2.xml"));
+        parser = new XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel2.xml"),db);
         root = parser.getResultNode();
         //System.out.println(Node.printChildren(root, 0));
         instance = new DefaultCalculator(root,dataBase,null);

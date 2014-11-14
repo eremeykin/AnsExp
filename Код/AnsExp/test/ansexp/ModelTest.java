@@ -5,6 +5,8 @@
  */
 package ansexp;
 
+import ansexp.model.SQLiteJDBC;
+import ansexp.model.Model;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -42,13 +44,12 @@ public class ModelTest {
     }
 
     @Test
-    public void testSomeMethod() throws ClassNotFoundException, SQLException, SQLiteJDBC.UndefinedDBFile, IOException {
+    public void testSomeMethod() throws Exception {
         Model m = new Model(new ZipFile("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\models\\model1.zip"));
         System.out.println(m.getCalcFile());
         System.out.println(m.getDbFile());
         System.out.println(m.getXmlFile());
-        SQLiteJDBC jdbc = SQLiteJDBC.getInstance();
-        jdbc.setSourceFile(m.getDbFile());
+        SQLiteJDBC jdbc = new SQLiteJDBC(m.getDbFile());
         System.err.println(jdbc.getItemsList("part_material", "name")[0]);
 
     }
