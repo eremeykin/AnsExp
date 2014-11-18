@@ -48,13 +48,13 @@ public class OutlineCreator {
                 int modelRow = convertRowIndexToModel(row);
                 int modelColumn = convertColumnIndexToModel(column);
                 Node selected = (Node) (this.getModel().getValueAt(modelRow, 0));
-                if (modelColumn==2 && selected.getEditor()!=null && selected.getEditor().getComponent() instanceof JComboBox ) {
-                    renderer = new DefaultTableCellRenderer(){
+                if (modelColumn == 2 && selected.getEditor() != null && selected.getEditor().getComponent() instanceof JComboBox) {
+                    renderer = new DefaultTableCellRenderer() {
                         @Override
-                            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                                Component c = new JComboBox(new String[] {selected.getValue()});
-                                return c;
-                            }
+                        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                            Component c = new JComboBox(new String[]{selected.getValue()});
+                            return c;
+                        }
 
                     };
                     return renderer;
@@ -70,6 +70,12 @@ public class OutlineCreator {
 
     public Outline getOutline() {
         return outline;
+    }
+
+    public static void refreshOutline(Outline outline, Node root) {
+        TreeModel treeMdl = new Models.PropertiesModel(root);
+        OutlineModel mdl = DefaultOutlineModel.createOutlineModel(treeMdl, new Models.TreeTableRowModel(), true, "Название");
+        outline.setModel(mdl);
     }
 
 }

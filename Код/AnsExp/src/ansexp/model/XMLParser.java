@@ -7,6 +7,7 @@ package ansexp.model;
 
 import ansexp.model.SQLiteJDBC;
 import java.io.File;
+import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -27,14 +28,11 @@ public class XMLParser {
 
     public XMLParser(File xmlFile, File dbFile) throws XMLParsingException, ClassNotFoundException, SQLException {
         result = new Node("Root", "", "", null, null);
-        dataBase = new SQLiteJDBC(dbFile);
-        this.xmlFile = xmlFile;
-        document = this.getDocument();
-    }
-
-    public XMLParser(File xmlFile, SQLiteJDBC dataBase) throws XMLParsingException, ClassNotFoundException, SQLException {
-        result = new Node("Root", "", "", null, null);
-        this.dataBase =dataBase;
+        if (dbFile != null) {
+            dataBase = new SQLiteJDBC(dbFile);
+        } else {
+            dataBase = null;
+        }
         this.xmlFile = xmlFile;
         document = this.getDocument();
     }
@@ -44,15 +42,22 @@ public class XMLParser {
 
             public DefaultCellEditor makeEditorForXMLNode(org.w3c.dom.Node node) throws SQLException, SQLiteJDBC.UndefinedDBFile {
                 for (int i = 0; i < node.getChildNodes().getLength(); i++) {
+                    org.w3c.dom.Node currNode = node.getChildNodes().item(i);
                     //Если обнаружен узел value
-                    if (node.getChildNodes().item(i).getNodeName().equals("value")) {
+                    if (currNode.getNodeName().equals("value")) {
                         // Получить тип редактора
-                        String editorType = getAttribute(node.getChildNodes().item(i), "editor");
+                        String editorType = getAttribute(currNode, "editor");
                         // Если указан редактор comboBox
                         if (editorType != null && editorType.equals("comboBox")) {
                             //ToDo Получить из список из БД!!
+                            String source = getAttribute(currNode, "source");
+                            String[] items = new String[0];
+                            if (source.equals("dataBase")) {
+                                String table = getAttribute(currNode, "table");
+                                String name = getAttribute(currNode, "name");
+                                items = dataBase.getItemsList("part_material", "name");
+                            }
 
-                            String[] items = dataBase.getItemsList("part_material", "name");
                             return new DefaultCellEditor(new JComboBox(items));
                         }
                         // Если указан редактор textField
@@ -127,6 +132,10 @@ public class XMLParser {
         result = new Node("Root", "", "", null, null);
         parseToResult(document, result);
         return result;
+    }
+    
+    public Connection getConnection(){
+        return this.dataBase.getConnection();
     }
 
     public class XMLParsingException extends Exception {

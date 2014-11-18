@@ -48,8 +48,8 @@ public class NodeTest {
     @Test
     public void testGetValueById() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
         System.out.println("getValueById");
-        SQLiteJDBC db = new SQLiteJDBC(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite"));
-        XMLParser parser = new XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel2.xml"), db);
+        File dbFile = new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite");
+        XMLParser parser = new XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel2.xml"), dbFile);
         Node instance = parser.getResultNode();
         String id = "INNER_RADIUS";
         String expResult = "3";
@@ -73,8 +73,8 @@ public class NodeTest {
     @Test
     public void testsetValueById() throws ClassNotFoundException, SQLException, XMLParser.XMLParsingException, SQLiteJDBC.UndefinedDBFile {
         System.out.println("getValueById");
-        SQLiteJDBC db = new SQLiteJDBC(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite"));
-        XMLParser parser = new XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel2.xml"), db);
+        File dbFile = new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite");
+        XMLParser parser = new XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel2.xml"), dbFile);
         Node instance = parser.getResultNode();
         String id = "INNER_RADIUS";
         instance.setValueById(id, "test");

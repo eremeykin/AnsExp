@@ -6,24 +6,30 @@
 package ansexp.forms;
 
 import ansexp.model.ButtonTabComponent;
-import ansexp.calculator.DefaultCalculator;
 import ansexp.model.Model;
 import ansexp.model.Node;
 import ansexp.model.OutlineCreator;
-import java.awt.Component;
+import ansexp.model.XMLParser;
+import ansexp.toolkit.Calculateable;
 import java.awt.Label;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import java.util.zip.*;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
+import javax.swing.filechooser.FileFilter;
 import org.netbeans.swing.outline.Outline;
 
 /**
@@ -33,6 +39,7 @@ import org.netbeans.swing.outline.Outline;
 public class MainForm extends javax.swing.JFrame {
 
     private Outline outline;
+    Model m;
 
     /**
      * Creates new form MainForm
@@ -40,7 +47,7 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
         try {
-            Model m = new Model(new ZipFile("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\models\\model1.zip"));
+            m = new Model(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\models\\model1"));
             JScrollPane jsp = new JScrollPane();
             m.getOutline().add(jPopupMenu1);
 
@@ -50,10 +57,10 @@ public class MainForm extends javax.swing.JFrame {
             jTabbedPane1.setTitleAt(0, "model1.zip");
             m.getOutline().addMouseListener(new PopClickListener());
 
-        } catch (Exception e) {
+        } catch (IOException | SQLException | XMLParser.XMLParsingException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(this, "Произошла ошибка.");
-            JOptionPane.showMessageDialog(this, e);
-
+            e.printStackTrace(System.out);
+            //JOptionPane.showMessageDialog(this, e.printStackTrace());
         }
 
     }
@@ -68,29 +75,25 @@ public class MainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jPopupMenuItem = new javax.swing.JMenuItem();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
-        jMenuItem4.setText("jMenuItem4");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jPopupMenuItem.setText("jMenuItem4");
+        jPopupMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jPopupMenuItemActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(jMenuItem4);
+        jPopupMenu1.add(jPopupMenuItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         jMenu1.setText("File");
 
@@ -112,13 +115,21 @@ public class MainForm extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("Выход");
+        jMenuItem3.setText("Запуск");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText("Выход");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
 
@@ -145,10 +156,23 @@ public class MainForm extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
 
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setFileFilter(new FileFilter() {
+
+            @Override
+            public boolean accept(File f) {
+                return f.isDirectory();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Models folder";
+            }
+        });
         int res = fileChooser.showDialog(jMenu1, "Открыть модель");
         if (res == JFileChooser.APPROVE_OPTION) {
             try {
-                Model m = new Model(new ZipFile(fileChooser.getSelectedFile()));
+                m = new Model(fileChooser.getSelectedFile());
                 JScrollPane jsp = new JScrollPane();
                 m.getOutline().add(jPopupMenu1);
                 jsp.setViewportView(m.getOutline());
@@ -159,6 +183,7 @@ public class MainForm extends javax.swing.JFrame {
             } catch (Exception exc) {
                 JOptionPane.showMessageDialog(this, "Произошла ошибка.");
                 JOptionPane.showMessageDialog(this, exc);
+                exc.printStackTrace();
             }
         }
 
@@ -170,19 +195,48 @@ public class MainForm extends javax.swing.JFrame {
         jTabbedPane1.setTabComponentAt(jTabbedPane1.getTabCount() - 1, new ButtonTabComponent(jTabbedPane1));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-        Runtime.getRuntime().exit(0);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+        System.out.println(Node.printChildren(m.getRoot(), 0));
+
+        Runtime.getRuntime().exit(0);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    private void jPopupMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPopupMenuItemActionPerformed
         // TODO add your handling code here:
-        Model.terminate();
-    }//GEN-LAST:event_formWindowClosing
+    }//GEN-LAST:event_jPopupMenuItemActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        try {
+            // TODO add your handling code here:
+            //m.getRoot().setValueById("JAW_HEIGHT", "test");
+            URL[] urls = {m.getClassesDir().toURI().toURL()};
+            URLClassLoader classLoader = new URLClassLoader(urls);
+            Class cls= classLoader.loadClass("ansexp.calculator.DefaultCalculator");
+            Constructor<?>[] constructors = cls.getConstructors();
+            //Class[] requiredParametersTypes = {DataSource.class};
+            for (Constructor constr : constructors) {
+                if (constr.getParameterTypes().length==0) {
+                    Calculateable calc = (Calculateable)  constr.newInstance();
+                    System.out.println("constr.newInstance()");
+                    calc.setConnection(m.getConnection());
+                    calc.calculate(m.getRoot());
+                    OutlineCreator.refreshOutline(m.getOutline(), m.getRoot());
+                    break;
+                }
+            }
+        } catch (MalformedURLException | ClassNotFoundException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -244,12 +298,12 @@ public class MainForm extends javax.swing.JFrame {
             JPopupMenu menu = new JPopupMenu();//jPopupMenu1;
             menu.add(new JMenuItem("Просмотр в новой вкладке"));
             if (outline.getSelectedRowCount() != 0 && !subRoot.isLeaf()) {
-                
+
                 menu.show(e.getComponent(), e.getX(), e.getY());
                 ((JMenuItem) menu.getComponent(0)).addActionListener(new java.awt.event.ActionListener() {
                     @Override
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        Outline subOutline=new OutlineCreator(subRoot).getOutline();
+                        Outline subOutline = new OutlineCreator(subRoot).getOutline();
                         JScrollPane jsp = new JScrollPane();
                         jsp.setViewportView(subOutline);
                         jTabbedPane1.add(jsp);
@@ -272,6 +326,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JMenuItem jPopupMenuItem;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

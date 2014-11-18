@@ -20,22 +20,22 @@ import org.junit.Test;
  * @author eremeykin
  */
 public class XMLParserTest {
-    
+
     public XMLParserTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -59,17 +59,17 @@ public class XMLParserTest {
     @Test
     public void testGetResultNode() throws Exception {
         System.out.println("getResultNode");
-        SQLiteJDBC db = new SQLiteJDBC(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite"));
-        XMLParser instance =new  XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel.xml"),db);
+        File dbFile = new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testDB.sqlite");
+        XMLParser instance = new XMLParser(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\test\\ansexp\\testmodel.xml"), dbFile);
         Node result = instance.getResultNode();
     }
-    
+
     private int countChildren(Node root) {
         int c = 1;
         for (Node node : root.getChildren()) {
-            c+=countChildren(node);
+            c += countChildren(node);
         }
         return c;
     }
-    
+
 }

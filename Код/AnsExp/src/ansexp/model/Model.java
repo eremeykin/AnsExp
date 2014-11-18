@@ -6,14 +6,11 @@
 package ansexp.model;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileFilter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
-import java.util.Enumeration;
-import java.util.zip.*;
 import org.netbeans.swing.outline.Outline;
 
 /**
@@ -22,70 +19,45 @@ import org.netbeans.swing.outline.Outline;
  */
 public class Model {
 
-    private File dbFile;
+    private File sqliteFile;
     private File xmlFile;
-    private File classFile;
+    private File classesDir;
+    private File mainDir;
+    private final XMLParser parser;
     private final Node root;
-    private final ZipFile zipFile;
     private final Outline outline;
 
-    private static ArrayDeque<Model> models=new ArrayDeque<>();
+    private static ArrayDeque<Model> models = new ArrayDeque<>();
 
-    public Model(ZipFile zipFile) throws IOException, SQLException, XMLParser.XMLParsingException, ClassNotFoundException {
-        this.zipFile = zipFile;
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            makeFile(entry);
-            if (isComplete()) {
-                break;
-            }
+    public Model(File mainDir) throws IOException, SQLException, XMLParser.XMLParsingException, ClassNotFoundException {
+        if (!mainDir.isDirectory()) {
+            throw new IllegalArgumentException("It is not a directory: " + mainDir);
         }
-        XMLParser parser = new XMLParser(xmlFile, dbFile);
+        this.mainDir = mainDir;
+        // Find all matching files
+        File[] xmlFiles = mainDir.listFiles(getFilter("xml"));
+        File[] sqliteFiles = mainDir.listFiles(getFilter("sqlite"));
+        File[] classesDirs = mainDir.listFiles(getFilter("classes"));
+        // Select on instance of files
+        xmlFile = xmlFiles.length > 0 ? xmlFiles[0] : null;
+        sqliteFile = sqliteFiles.length > 0 ? sqliteFiles[0] : null;
+        classesDir = classesDirs.length > 0 ? classesDirs[0] : null;
+        // Create root
+        parser = new XMLParser(xmlFile, sqliteFile);
         root = parser.getResultNode();
-        outline = new OutlineCreator(root).getOutline();
+        outline = new OutlineCreator(getRoot()).getOutline();
         models.add(this);
     }
 
     private boolean isComplete() {
-        return dbFile != null && xmlFile != null && classFile != null;
-    }
-
-    private void makeFile(ZipEntry entry) throws IOException {
-        String extension = getExt(entry.getName());
-
-        File tempFile = File.createTempFile(Integer.toString(entry.hashCode()), "." + extension);
-        //tempFile.deleteOnExit();
-
-        switch (extension) {
-            case "xml":
-                xmlFile = tempFile;
-                break;
-            case "sqlite":
-                dbFile = tempFile;
-                break;
-            case "class":
-                classFile = tempFile;
-                break;
-            default:
-                return;
-        }
-
-        InputStream stream = this.zipFile.getInputStream(entry);
-        FileOutputStream tmpOut = new FileOutputStream(tempFile);
-        byte b[] = new byte[stream.available()];
-        stream.read(b);
-        tmpOut.write(b);
-        stream.close();
-        tmpOut.close();
-
+        return sqliteFile != null && xmlFile != null && classesDir != null;
     }
 
     /**
      * @return the dbFile
      */
-    public File getDbFile() {
-        return dbFile;
+    public File getSqliteFile() {
+        return sqliteFile;
     }
 
     /**
@@ -98,13 +70,8 @@ public class Model {
     /**
      * @return the calcFile
      */
-    public File getCalcFile() {
-        return classFile;
-    }
-
-    private String getExt(String path) {
-        String[] s = path.split("\\.");
-        return s[s.length - 1];
+    public File getClassesDir() {
+        return classesDir;
     }
 
     /**
@@ -114,15 +81,38 @@ public class Model {
         return outline;
     }
 
-    public static void terminate() {
-        for (Model m : models) {
-            if (m.classFile!=null)
-                m.classFile.delete();
-            if (m.dbFile!=null)
-                m.dbFile.delete();
-            if (m.xmlFile!=null)
-                m.xmlFile.delete();
+
+
+    private FileFilter getFilter(String ext) {
+        if (ext.equals("classes")) {
+            return new FileFilter() {
+
+                @Override
+                public boolean accept(File pathname) {
+                    return pathname.isDirectory() && pathname.getName().equals(ext);
+                }
+            };
         }
+        return new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                String[] tokens = pathname.getName().split("\\.");
+                String extension = tokens[tokens.length - 1];
+                return extension.equals(ext);
+            }
+        };
     }
+
+    /**
+     * @return the root
+     */
+    public Node getRoot() {
+        return root;
+    }
+    
+    public  Connection getConnection(){
+        return parser.getConnection();
+    } 
 
 }

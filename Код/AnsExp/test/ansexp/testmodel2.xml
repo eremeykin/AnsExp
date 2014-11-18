@@ -36,7 +36,7 @@ and open the template in the editor.
             <node id="PART_MATERIAL_NAME">
                 <name>Название</name>
                 <description>Название материала</description>
-                <value editor="comboBox" source="table:part_material">7</value>
+                <value editor="comboBox" source="dataBase" table="part_material" name="name">7</value>
             </node>
             <node id="PART_E_MODULUS">
                 <name>Модуль упругости</name>
@@ -91,7 +91,7 @@ and open the template in the editor.
             <node id="JAW_MATERIAL_NAME">
                 <name>Название</name>
                 <description>Значение модуля упругости (Юнга) для материала кулачка [МПа]</description>
-                <value editor="comboBox">18</value>
+                <value editor="comboBox" source="dataBase" table="part_material" name="name">18</value>
             </node>
             <node id="JAW_E_MODULUS">
                 <name>Модуль упругости</name>

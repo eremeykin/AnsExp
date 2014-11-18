@@ -17,7 +17,7 @@ public class SQLiteJDBC {
     public String[] getItemsList(String tableName, String columnName) throws SQLException, UndefinedDBFile {
         try {
             List<String> items = new ArrayList<>();
-            Statement st = connection.createStatement();
+            Statement st = getConnection().createStatement();
             ResultSet rs = st.executeQuery("select " + columnName + " from " + tableName + ";");
 
             while (rs.next()) {
@@ -46,7 +46,7 @@ public class SQLiteJDBC {
     public String getValue(String table, String keyColumn, String valueColumn, String key) throws UndefinedDBFile, SQLException {
         try {
 
-            PreparedStatement ps = connection.prepareStatement("select " + valueColumn + " from " + table + " where " + keyColumn + "= ?");
+            PreparedStatement ps = getConnection().prepareStatement("select " + valueColumn + " from " + table + " where " + keyColumn + "= ?");
             ps.setString(1, key);
             
             ResultSet rs = ps.executeQuery();
@@ -56,6 +56,13 @@ public class SQLiteJDBC {
         } catch (NullPointerException ex) {
             throw new UndefinedDBFile(ex);
         }
+    }
+
+    /**
+     * @return the connection
+     */
+    public Connection getConnection() {
+        return connection;
     }
 
     public class UndefinedDBFile extends SQLException {
