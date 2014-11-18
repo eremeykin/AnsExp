@@ -18,17 +18,17 @@ and open the template in the editor.
         <node id="INNER_RADIUS">
             <name>Внешний радиус</name>
             <description>Внешний радиус цилиндрической детали [мм]</description>
-            <value editor="textField">0.030</value>
+            <value editor="textField"></value>
         </node>
         <node id="OUTER_RADIUS">
             <name>Внутренний радиус</name>
-            <description>Внутренний радиус цилиндрической детали [мм]</description>
-            <value editor="textField">0.027</value>
+            <description>Внешний радиус цилиндрической детали [мм]</description>
+            <value editor="textField"></value>
         </node>
         <node id="LENGTH">
             <name>Длина</name>
             <description>Высота цилиндра [мм]</description>
-            <value editor="textField">0.050</value>
+            <value editor="textField"></value>
         </node>
         <node>
             <name>Материал</name>
@@ -58,7 +58,7 @@ and open the template in the editor.
         <node id="JAW_DELTA">
             <name>Величина смещения</name>
             <description>Величина смещения каждого из кулачков в радиальном направлении при закреплении [мкм]</description>
-            <value editor="textField">3e-5</value>       
+            <value editor="textField"></value>       
         </node>
         <node>
             <name>Размеры</name>
@@ -67,17 +67,17 @@ and open the template in the editor.
             <node id="JAW_LENGTH">
                 <name>Длина</name>
                 <description>Длина кулачка [мм]</description>
-                <value editor="textField">15e-3</value>
+                <value editor="textField"></value>
             </node>
             <node  id="JAW_WIDTH">
                 <name>Высота</name>
                 <description>Высота кулачка [мм]</description>
-                <value editor="textField">20e-3</value>
+                <value editor="textField"></value>
             </node>
             <node  id="JAW_HEIGHT">
                 <name>Ширина</name>
                 <description>Ширина кулачка [мм]</description>
-                <value editor="textField">15e-3</value>
+                <value editor="textField"></value>
             </node>
         </node>
         <node>
@@ -112,23 +112,23 @@ and open the template in the editor.
             <node id="FORCE_TAN">
                 <name >Касательная, Ftan</name>
                 <description>Касательная составляющая силы резания [Н]</description>
-                <value editor="textField">-1181</value>
+                <value editor="textField"></value>
             </node>
             <node  id="FORCE_RAD">
                 <name>Радиальная, Frad</name>
                 <description>Радиальная составляющая силы резания [Н]</description>
-                <value editor="textField">-334</value>      
+                <value editor="textField"></value>      
             </node>
             <node  id="FORCE_AX">
                 <name>Осевая, Fax</name>
                 <description>Осевая составляющая силы резания [Н]</description>
-                <value editor="textField">-436</value> 
+                <value editor="textField"></value> 
             </node>
         </node>
         <node  id="FORCE_POS">
             <name>Угловое положение</name>
             <description>Угловое положение силы резания [рад]</description>
-            <value editor="textField">0</value>
+            <value editor="textField"></value>
         </node>
     </node>
 </root>

@@ -72,10 +72,4 @@ public class OutlineCreator {
         return outline;
     }
 
-    public static void refreshOutline(Outline outline, Node root) {
-        TreeModel treeMdl = new Models.PropertiesModel(root);
-        OutlineModel mdl = DefaultOutlineModel.createOutlineModel(treeMdl, new Models.TreeTableRowModel(), true, "Название");
-        outline.setModel(mdl);
-    }
-
 }

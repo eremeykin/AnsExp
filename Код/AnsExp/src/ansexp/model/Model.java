@@ -5,9 +5,15 @@
  */
 package ansexp.model;
 
+import ansexp.toolkit.Calculateable;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
@@ -23,13 +29,19 @@ public class Model {
     private File xmlFile;
     private File classesDir;
     private File mainDir;
+    private File output;
+    private File macFile;
+    private File ansysDir=new File("D:\\Program Files\\ANSYS Inc\\v150\\ansys\\bin\\winx64\\ANSYS150.exe");
+    private File workingDir=new File("C:\\Users\\Пётр\\Desktop\\AnsysTestWorkingDir");
     private final XMLParser parser;
     private final Node root;
     private final Outline outline;
+    private Calculateable calc;
+    private AnsysQueryPerformer aqPerformer;
 
     private static ArrayDeque<Model> models = new ArrayDeque<>();
 
-    public Model(File mainDir) throws IOException, SQLException, XMLParser.XMLParsingException, ClassNotFoundException {
+    public Model(File mainDir) throws IOException, SQLException, XMLParser.XMLParsingException, ClassNotFoundException, MalformedURLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (!mainDir.isDirectory()) {
             throw new IllegalArgumentException("It is not a directory: " + mainDir);
         }
@@ -38,15 +50,49 @@ public class Model {
         File[] xmlFiles = mainDir.listFiles(getFilter("xml"));
         File[] sqliteFiles = mainDir.listFiles(getFilter("sqlite"));
         File[] classesDirs = mainDir.listFiles(getFilter("classes"));
+        File[] macFiles = mainDir.listFiles(getFilter("mac"));
         // Select on instance of files
         xmlFile = xmlFiles.length > 0 ? xmlFiles[0] : null;
         sqliteFile = sqliteFiles.length > 0 ? sqliteFiles[0] : null;
         classesDir = classesDirs.length > 0 ? classesDirs[0] : null;
+        macFile = macFiles.length > 0 ? macFiles[0] : null;
         // Create root
         parser = new XMLParser(xmlFile, sqliteFile);
         root = parser.getResultNode();
         outline = new OutlineCreator(getRoot()).getOutline();
         models.add(this);
+        loadCalculator();
+    }
+
+    private void loadCalculator() throws ClassNotFoundException, MalformedURLException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        //m.getRoot().setValueById("JAW_HEIGHT", "test");
+        URL[] urls = {getClassesDir().toURI().toURL()};
+        URLClassLoader classLoader = new URLClassLoader(urls);
+        Class cls = classLoader.loadClass("ansexp.calculator.DefaultCalculator");
+        Constructor<?>[] constructors = cls.getConstructors();
+        //Class[] requiredParametersTypes = {DataSource.class};
+        for (Constructor constr : constructors) {
+            if (constr.getParameterTypes().length == 0) {
+                calc = (Calculateable) constr.newInstance();
+                calc.setConnection(getConnection());
+                break;
+            }
+        }
+    }
+
+    public void calculate() {
+        calc.calculate(root);
+        outline.repaint();
+    }
+
+    public void print() throws IOException {
+        output = calc.printToFile(getMacFile());
+    }
+
+    public void run() throws IOException {
+        calculate();
+        aqPerformer = new AnsysQueryPerformer(ansysDir, workingDir, output);
+        aqPerformer.run("Test");
     }
 
     private boolean isComplete() {
@@ -81,8 +127,6 @@ public class Model {
         return outline;
     }
 
-
-
     private FileFilter getFilter(String ext) {
         if (ext.equals("classes")) {
             return new FileFilter() {
@@ -110,9 +154,30 @@ public class Model {
     public Node getRoot() {
         return root;
     }
-    
-    public  Connection getConnection(){
+
+    public Connection getConnection() {
         return parser.getConnection();
-    } 
+    }
+
+    /**
+     * @return the mainDir
+     */
+    public File getMainDir() {
+        return mainDir;
+    }
+
+    /**
+     * @param mainDir the mainDir to set
+     */
+    public void setMainDir(File mainDir) {
+        this.mainDir = mainDir;
+    }
+
+    /**
+     * @return the macFile
+     */
+    public File getMacFile() {
+        return macFile;
+    }
 
 }

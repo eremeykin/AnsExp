@@ -6,8 +6,6 @@
 package ansexp.model;
 
 import java.io.*;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -27,32 +25,24 @@ public class AnsysQueryPerformer {
         this.queryFile = queryFile;
     }
 
-    public void runQuery(String query, String userDirName, String projectName) throws IOException, FileNotFoundException, SAXException, ParserConfigurationException, InterruptedException {
+    public void run(String jobName) throws IOException {
         ProcessBuilder pb = new ProcessBuilder("cmd");
         pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
         Process p = pb.start();
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream(), "windows-1251"));
+        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream(), "windows-1251"));
         BufferedOutputStream out = new BufferedOutputStream(p.getOutputStream());
 
-        String command = "\"" + ansysDir + "\"";
-        String setDir = "-dir " + workingDir + "\\" + userDirName + "\\" + projectName;
-        String setJobName = "-j " + projectName;
-        String setInputFile = "-i " + "\"" + queryFile + "\"";
-        String setOutputFile = "-o " + "\"" + workingDir + "\\" + userDirName + "\\" + projectName + "\\output.txt" + "\"";
-        command = command + " " + setDir + " " + setInputFile + " " + setOutputFile + " " + setJobName + " -b list " + "\n";
-        out.write(command.getBytes());
+        String command = "chcp 1251\n  \"" + ansysDir + "\"  -g";
+        // "D:\Program Files\ANSYS Inc\v150\ansys\bin\winx64\ANSYS150.exe" -g -p ane3fl  -i "C:\ProgramData\AnsExp\output.txt" -o "C:\Users\Public\output.txt"  -b 
+        String setDir =  "-dir " + "\"C:\\Users\\Пётр\\Desktop\\AnsysTestWorkingDir\"";
+        String setJobName = " -j " + "\"Test\"";
+        String setInputFile = " -i " + "\"" + queryFile + "\"";
+        String setOutputFile = " -o " + "\"C:\\Users\\Пётр\\Desktop\\AnsysTestWorkingDir\\output.txt\"";//"\"" + workingDir + "\\" + jobName + "\\output.txt" + "\"";
+        command = command + " " + setDir + " " + setInputFile + " " + setOutputFile + " " + setJobName + " -b list " + "-s read -l en-us -t -d win32   \n";
+        out.write(command.getBytes("windows-1251"));
         out.flush();
-    }
-
-    public String queryToFile(String query, String userName, String projectName) throws FileNotFoundException, IOException, SAXException, ParserConfigurationException {
-        String dirName = workingDir + "\\" + userName + "\\" + projectName;
-        File dir = new File(dirName);
-        dir.mkdirs();
-        try (FileOutputStream fout = new FileOutputStream(queryFile)) {
-            fout.write(query.getBytes());
-        }
-        return queryFile.getAbsolutePath();
+        out.close();
     }
 }
