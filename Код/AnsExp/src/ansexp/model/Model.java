@@ -31,8 +31,8 @@ public class Model {
     private File mainDir;
     private File output;
     private File macFile;
-    private File ansysDir=new File("D:\\Program Files\\ANSYS Inc\\v150\\ansys\\bin\\winx64\\ANSYS150.exe");
-    private File workingDir=new File("C:\\Users\\Пётр\\Desktop\\AnsysTestWorkingDir");
+    private File ansysDir=new File(System.getenv("ANSYS150_DIR")+"\\bin\\winx64\\ANSYS150.exe");
+    private File workingDir=new File(System.getProperty("user.home")+"\\Desktop\\AnsysTestWorkingDir");
     private final XMLParser parser;
     private final Node root;
     private final Outline outline;
@@ -91,7 +91,7 @@ public class Model {
 
     public void run() throws IOException {
         calculate();
-        aqPerformer = new AnsysQueryPerformer(ansysDir, workingDir, output);
+        aqPerformer = new AnsysQueryPerformer(getAnsysDir(), getWorkingDir(), output);
         aqPerformer.run("Test");
     }
 
@@ -178,6 +178,27 @@ public class Model {
      */
     public File getMacFile() {
         return macFile;
+    }
+
+    /**
+     * @return the ansysDir
+     */
+    public File getAnsysDir() {
+        return ansysDir;
+    }
+
+    /**
+     * @param ansysDir the ansysDir to set
+     */
+    public void setAnsysDir(File ansysDir) {
+        this.ansysDir = ansysDir;
+    }
+
+    /**
+     * @return the workingDir
+     */
+    public File getWorkingDir() {
+        return workingDir;
     }
 
 }

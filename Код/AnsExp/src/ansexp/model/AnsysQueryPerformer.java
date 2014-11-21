@@ -40,7 +40,9 @@ public class AnsysQueryPerformer {
         String setJobName = " -j " + "\"Test\"";
         String setInputFile = " -i " + "\"" + queryFile + "\"";
         String setOutputFile = " -o " + "\"C:\\Users\\Пётр\\Desktop\\AnsysTestWorkingDir\\output.txt\"";//"\"" + workingDir + "\\" + jobName + "\\output.txt" + "\"";
-        command = command + " " + setDir + " " + setInputFile + " " + setOutputFile + " " + setJobName + " -b list " + "-s read -l en-us -t -d win32   \n";
+        command = command + " " + setDir + " " + setInputFile + " " + setOutputFile + " " + setJobName + " -b list " + "-s read -l en-us -t -d win32  \n ";
+//        out.write(("echo "+command.replace("\n", " ") + "> D:\\1.txt \n").getBytes("windows-1251"));
+//        out.flush();
         out.write(command.getBytes("windows-1251"));
         out.flush();
         out.close();

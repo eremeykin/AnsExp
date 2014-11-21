@@ -16,14 +16,14 @@ and open the template in the editor.
         <description></description>
         <value></value>
         <node id="INNER_RADIUS">
-            <name>Внешний радиус</name>
-            <description>Внешний радиус цилиндрической детали [мм]</description>
-            <value editor="textField">0.030</value>
-        </node>
-        <node id="OUTER_RADIUS">
             <name>Внутренний радиус</name>
             <description>Внутренний радиус цилиндрической детали [мм]</description>
             <value editor="textField">0.027</value>
+        </node>
+        <node id="OUTER_RADIUS">
+            <name>Внешний радиус</name>
+            <description>Внешний радиус цилиндрической детали [мм]</description>
+            <value editor="textField">0.030</value>
         </node>
         <node id="LENGTH">
             <name>Длина</name>
