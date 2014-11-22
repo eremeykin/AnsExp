@@ -5,6 +5,7 @@
  */
 package ansexp.model;
 
+import ansThreads.AnsysLauncher;
 import ansexp.toolkit.Calculateable;
 import java.io.File;
 import java.io.FileFilter;
@@ -91,8 +92,10 @@ public class Model {
 
     public void run() throws IOException {
         calculate();
-        aqPerformer = new AnsysQueryPerformer(getAnsysDir(), getWorkingDir(), output);
-        aqPerformer.run("Test");
+        ansThreads.AnsysLauncher aLauncher = new AnsysLauncher(getAnsysDir(), getWorkingDir(), output);
+        aLauncher.start();
+//        aqPerformer = new AnsysQueryPerformer(getAnsysDir(), getWorkingDir(), output);
+//        aqPerformer.run("Test");
     }
 
     private boolean isComplete() {

@@ -270,7 +270,7 @@ public class PreferencesForm extends javax.swing.JFrame {
                         .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton7)
                         .addComponent(jLabel7)))
-                .addGap(117, 117, 117))
+                .addGap(25, 25, 25))
         );
 
         pack();
