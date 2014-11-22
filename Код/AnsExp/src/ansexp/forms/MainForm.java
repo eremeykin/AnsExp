@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -72,7 +71,6 @@ public class MainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
-        jPopupMenuItem = new javax.swing.JMenuItem();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -82,14 +80,6 @@ public class MainForm extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-
-        jPopupMenuItem.setText("jMenuItem4");
-        jPopupMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPopupMenuItemActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(jPopupMenuItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AnsExp beta");
@@ -202,10 +192,6 @@ public class MainForm extends javax.swing.JFrame {
         Runtime.getRuntime().exit(0);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jPopupMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPopupMenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPopupMenuItemActionPerformed
-
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         try {
             m.calculate();
@@ -217,6 +203,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         try {
+            m.calculate();
             m.print();
             m.run();
         } catch (IOException ex) {
@@ -319,7 +306,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JMenuItem jPopupMenuItem;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
