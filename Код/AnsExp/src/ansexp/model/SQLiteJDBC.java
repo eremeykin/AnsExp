@@ -8,9 +8,11 @@ import java.util.List;
 public class SQLiteJDBC {
 
     private final Connection connection;
+    private final File sqliteFile;
 
     public SQLiteJDBC(File file) throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
+        sqliteFile = file;
         connection = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
     }
 
@@ -63,6 +65,13 @@ public class SQLiteJDBC {
      */
     public Connection getConnection() {
         return connection;
+    }
+
+    /**
+     * @return the sqliteFile
+     */
+    public File getSqliteFile() {
+        return sqliteFile;
     }
 
     public class UndefinedDBFile extends SQLException {

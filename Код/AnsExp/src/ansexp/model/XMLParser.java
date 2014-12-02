@@ -23,11 +23,9 @@ public class XMLParser {
 
     private final SQLiteJDBC dataBase;
     private File xmlFile;
-    private Node result;
     private Document document;
 
     public XMLParser(File xmlFile, File dbFile) throws XMLParsingException, ClassNotFoundException, SQLException {
-        result = new Node("Root", "", "", null, null);
         if (dbFile != null) {
             dataBase = new SQLiteJDBC(dbFile);
         } else {
@@ -55,7 +53,7 @@ public class XMLParser {
                             if (source.equals("dataBase")) {
                                 String table = getAttribute(currNode, "table");
                                 String name = getAttribute(currNode, "name");
-                                items = dataBase.getItemsList("part_material", "name");
+                                items = getDataBase().getItemsList("part_material", "name");
                             }
 
                             return new DefaultCellEditor(new JComboBox(items));
@@ -129,15 +127,11 @@ public class XMLParser {
     }
 
     public Node getResultNode() throws SQLException, SQLiteJDBC.UndefinedDBFile {
-        result = new Node("Root", "", "", null, null);
+        Node result = new Node("Root", "", "", null, null);
         parseToResult(document, result);
         return result;
     }
     
-    public Connection getConnection(){
-        return this.dataBase.getConnection();
-    }
-
     /**
      * @return the xmlFile
      */
@@ -150,6 +144,13 @@ public class XMLParser {
      */
     public void setXmlFile(File xmlFile) {
         this.xmlFile = xmlFile;
+    }
+
+    /**
+     * @return the dataBase
+     */
+    public SQLiteJDBC getDataBase() {
+        return dataBase;
     }
 
     public class XMLParsingException extends Exception {

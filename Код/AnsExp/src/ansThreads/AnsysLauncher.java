@@ -24,21 +24,25 @@ public class AnsysLauncher extends Thread {
 
     private final File ansysDir;
     private final File workingDir;
-    private final File queryFile;
+    private File queryFile;
     RuningForm rForm = new RuningForm();
 
-    public AnsysLauncher(File ansysDir, File workingDir, File queryFile) {
+    public AnsysLauncher(File ansysDir, File workingDir) {
         setDaemon(true);
         this.ansysDir = ansysDir;
         this.workingDir = workingDir;
-        this.queryFile = queryFile;
-        rForm.setVisible(true);
+        rForm.setVisible(false);
+    }
+
+    public void setOutput(File outputFile) {
+        queryFile = outputFile;
     }
 
     @Override
     public void run() {
+        rForm.setVisible(true);
         BufferedReader in = null;
-        File outPutFile = new File(workingDir + "\\output.txt");
+        File outPutFile = new File(getWorkingDir() + "\\output.txt");
         outPutFile.delete();
         outPutFile.getParentFile().mkdirs();
         try {
@@ -47,9 +51,8 @@ public class AnsysLauncher extends Thread {
             //in = new BufferedReader(new InputStreamReader(p.getInputStream(), "windows-1251"));
             //BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream(), "windows-1251"));
             BufferedOutputStream out = new BufferedOutputStream(p.getOutputStream());
-            String jobName = "AnsExp";
-            String command = "chcp 1251\n  \"" + ansysDir + "\"  -g";
-            String setDir = "-dir " + "\"" + workingDir + "\"";
+            String command = "chcp 1251\n  \"" + getAnsysDir() + "\"  -g";
+            String setDir = "-dir " + "\"" + getWorkingDir() + "\"";
             String setJobName = " -j " + "\"Test\"";
             String setInputFile = " -i " + "\"" + queryFile + "\"";
             String setOutputFile = " -o " + "\"" + outPutFile.toString() + "\"";
@@ -57,7 +60,6 @@ public class AnsysLauncher extends Thread {
             out.write(command.getBytes("windows-1251"));
             out.flush();
             out.close();
-            String line = "";
             //p.waitFor();
             Thread outFiller = new Thread(new Runnable() {
 
@@ -76,10 +78,11 @@ public class AnsysLauncher extends Thread {
                         try {
                             while (outReader.ready()) {
                                 try {
-                                    String line=outReader.readLine();
+                                    String line = outReader.readLine();
                                     rForm.addOutput(line);
-                                    if (line.contains("ERROR"))
+                                    if (line.contains("ERROR")) {
                                         rForm.addError(line);
+                                    }
                                 } catch (IOException ex) {
                                 }
                             }
@@ -88,11 +91,12 @@ public class AnsysLauncher extends Thread {
                         }
                     }
 
-                    if (outReader != null)
+                    if (outReader != null) {
                         try {
                             outReader.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     rForm.hideProgressBar();
                 }
@@ -103,6 +107,20 @@ public class AnsysLauncher extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * @return the ansysDir
+     */
+    public File getAnsysDir() {
+        return ansysDir;
+    }
+
+    /**
+     * @return the workingDir
+     */
+    public File getWorkingDir() {
+        return workingDir;
     }
 
 }
