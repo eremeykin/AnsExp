@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,12 +40,12 @@ public class AnsysLauncher extends Thread {
         BufferedReader in = null;
         File outPutFile = new File(workingDir + "\\output.txt");
         outPutFile.delete();
+        outPutFile.getParentFile().mkdirs();
         try {
             ProcessBuilder pb = new ProcessBuilder("cmd");
-            //pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
-            in = new BufferedReader(new InputStreamReader(p.getInputStream(), "windows-1251"));
-            BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream(), "windows-1251"));
+            //in = new BufferedReader(new InputStreamReader(p.getInputStream(), "windows-1251"));
+            //BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream(), "windows-1251"));
             BufferedOutputStream out = new BufferedOutputStream(p.getOutputStream());
             String jobName = "AnsExp";
             String command = "chcp 1251\n  \"" + ansysDir + "\"  -g";
@@ -64,65 +63,41 @@ public class AnsysLauncher extends Thread {
 
                 @Override
                 public void run() {
+                    System.out.println(outPutFile.delete());
                     BufferedReader outReader = null;
 
                     while (p.isAlive()) {
                         try {
-                            outReader = new BufferedReader(new FileReader(outPutFile));
+                            if (outReader == null) {
+                                outReader = new BufferedReader(new FileReader(outPutFile));
+                            }
                         } catch (FileNotFoundException ex) {
-                            Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         try {
                             while (outReader.ready()) {
                                 try {
-                                    rForm.addOutput(outReader.readLine());//System.out.print(c);
+                                    String line=outReader.readLine();
+                                    rForm.addOutput(line);
+                                    if (line.contains("ERROR"))
+                                        rForm.addError(line);
                                 } catch (IOException ex) {
-                                    Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
-                        } catch (IOException ex) {
-                            Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (FileNotFoundException ex) {
+                        } catch (Exception ex) {
                         }
                     }
 
-                }
-            }
-            );
-            outFiller.start();
-            Thread errFiller = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    BufferedReader outReader = null;
-                    boolean errStarts = false;
-                    try {
-                        outReader = new BufferedReader(new FileReader(outPutFile));
-                        while (p.isAlive()) {
-                            try {
-                                while (outReader.ready()) {
-                                    String out = outReader.readLine();//System.out.print(c);
-                                    if (out.startsWith(" *** ERROR ***") || errStarts) {
-                                        rForm.addError(out);
-                                        errStarts = !out.equals("");
-                                    }
-                                }
-                            } catch (IOException ex) {
-                                Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
-                    } finally {
+                    if (outReader != null)
                         try {
                             outReader.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    rForm.hideProgressBar();
                 }
             });
-            //errFiller.start();
-
+            outFiller.start();
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(AnsysLauncher.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

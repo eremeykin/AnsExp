@@ -38,7 +38,6 @@ public class Model {
     private final Node root;
     private final Outline outline;
     private Calculateable calc;
-    private AnsysQueryPerformer aqPerformer;
 
     private static ArrayDeque<Model> models = new ArrayDeque<>();
 
@@ -94,8 +93,6 @@ public class Model {
         calculate();
         ansThreads.AnsysLauncher aLauncher = new AnsysLauncher(getAnsysDir(), getWorkingDir(), output);
         aLauncher.start();
-//        aqPerformer = new AnsysQueryPerformer(getAnsysDir(), getWorkingDir(), output);
-//        aqPerformer.run("Test");
     }
 
     private boolean isComplete() {

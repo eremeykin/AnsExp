@@ -28,6 +28,10 @@ public class RuningForm extends javax.swing.JFrame {
     public void addOutput(String output) {
         jTextArea1.setText(jTextArea1.getText()+"\n"+output);
     }
+    public void hideProgressBar(){
+        //jProgressBar1.setString("Готово");
+        jProgressBar1.setVisible(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,9 +55,15 @@ public class RuningForm extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                formComponentHidden(evt);
+            }
+        });
 
         jProgressBar1.setIndeterminate(true);
+        jProgressBar1.setString("");
+        jProgressBar1.setStringPainted(true);
 
         jButton1.setText("Прервать");
 
@@ -64,6 +74,8 @@ public class RuningForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Вывод:");
+
+        jScrollPane2.setAutoscrolls(true);
 
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
@@ -97,6 +109,8 @@ public class RuningForm extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Ошибки:");
+
+        jScrollPane3.setAutoscrolls(true);
 
         jTextArea2.setColumns(20);
         jTextArea2.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
@@ -161,6 +175,10 @@ public class RuningForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentHidden
 
     /**
      * @param args the command line arguments

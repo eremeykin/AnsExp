@@ -15,7 +15,11 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -33,6 +37,7 @@ import org.netbeans.swing.outline.Outline;
 public class MainForm extends javax.swing.JFrame {
 
     private Outline outline;
+    private static final String DEFAULT_MODEL = "/res/models/model1";
     Model m;
 
     /**
@@ -41,7 +46,9 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
         try {
-            m = new Model(new File("C:\\Users\\Пётр\\Desktop\\Курсовой\\AnsExp\\Код\\AnsExp\\models\\model1"));
+            URL defaultModel = getClass().getResource(DEFAULT_MODEL);
+            File defaultModelFile = new File(defaultModel.toURI());
+            m = new Model(defaultModelFile);
             JScrollPane jsp = new JScrollPane();
             m.getOutline().add(jPopupMenu1);
 
@@ -52,11 +59,14 @@ public class MainForm extends javax.swing.JFrame {
             m.getOutline().addMouseListener(new PopClickListener());
 
         } catch (IOException | SQLException | XMLParser.XMLParsingException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "Произошла ошибка.");
+            JOptionPane.showMessageDialog(this, e);
             e.printStackTrace(System.out);
-            //JOptionPane.showMessageDialog(this, e.printStackTrace());
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex);
         }
 
     }

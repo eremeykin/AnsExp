@@ -120,7 +120,7 @@ public class XMLParser {
             DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
             f.setValidating(false);
             DocumentBuilder builder = f.newDocumentBuilder();
-            doc = builder.parse(this.xmlFile);
+            doc = builder.parse(this.getXmlFile());
         } catch (Exception e) {
 
             throw new XMLParsingException(e);
@@ -136,6 +136,20 @@ public class XMLParser {
     
     public Connection getConnection(){
         return this.dataBase.getConnection();
+    }
+
+    /**
+     * @return the xmlFile
+     */
+    public File getXmlFile() {
+        return xmlFile;
+    }
+
+    /**
+     * @param xmlFile the xmlFile to set
+     */
+    public void setXmlFile(File xmlFile) {
+        this.xmlFile = xmlFile;
     }
 
     public class XMLParsingException extends Exception {
